@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css';
 import { AllCardsList } from './components/AllCardsList/AllCardsList';
 import { Header } from './components/Header/Header';
@@ -7,19 +7,28 @@ import { useDebounce } from './hooks/useDebounce';
 import { Footer } from './components/Footer/Footer';
 import { useUserAndProductsData } from './hooks/useUserAndProductsData';
 import { useValueInSearch } from './hooks/useValueInSearch';
+import { ErrorFetch } from './components/ErrorFetch/ErrorFetch';
 
 function App() {
   const [user, setUser] = useState({});
   const [allProducts, setAllProducts] = useState([]);
   const [search, setSearch] = useState(undefined);
+  const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const debounceValueInApp = useDebounce(search);
 
   // Получение данных о пользователе и всех продуктах
-  useUserAndProductsData({ api, setUser, setAllProducts });
+  useUserAndProductsData({
+    api,
+    setUser,
+    setAllProducts,
+    setError,
+    setIsLoading,
+  });
 
   // Отслеживание изменения запроса продуктов, выполнение запроса
-  useValueInSearch({ debounceValueInApp, api, setAllProducts });
+  useValueInSearch({ debounceValueInApp, api, setAllProducts, setError });
 
   // Добавление/удаление лайка
   const changeLike = async (product, isLike) => {
@@ -37,7 +46,9 @@ function App() {
   return (
     <div className="App">
       <Header setSearch={setSearch} />
+      {!!error && <ErrorFetch />}
       <main className="container">
+        {isLoading && <p>Загрузка...</p>}
         <AllCardsList
           userId={user._id}
           allProducts={allProducts}

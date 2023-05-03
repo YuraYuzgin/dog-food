@@ -7,8 +7,10 @@ const config = {
   },
 };
 
-const onResponse = (res) => {
-  return res.ok ? res.json() : Promise.reject('error');
+const onResponse = (res) => res.json();
+// const fetchError = (error) => console.log(error.message);
+const fetchError = (res) => {
+  return Promise.reject('Ошибка связи с сервером');
 };
 
 class Api {
@@ -21,21 +23,27 @@ class Api {
   getUserInfoByToken() {
     return fetch(`${this.baseUrl}/users/me`, {
       headers: this.headers,
-    }).then(onResponse);
+    })
+      .then(onResponse)
+      .catch(fetchError);
   }
 
   // Получение всех товаров
   getAllProducts() {
     return fetch(`${this.baseUrl}/products`, {
       headers: this.headers,
-    }).then(onResponse);
+    })
+      .then(onResponse)
+      .catch(fetchError);
   }
 
   // Поиск товаров
   getProductsByQuery(path) {
     return fetch(`${this.baseUrl}/products/search?query=${path}`, {
       headers: this.headers,
-    }).then(onResponse);
+    })
+      .then(onResponse)
+      .catch(fetchError);
   }
 
   // Добавление/удаление лайка
@@ -43,7 +51,9 @@ class Api {
     return fetch(`${this.baseUrl}/products/likes/${productId}`, {
       method: isLike ? 'DELETE' : 'PUT',
       headers: this.headers,
-    }).then(onResponse);
+    })
+      .then(onResponse)
+      .catch(fetchError);
   }
 }
 

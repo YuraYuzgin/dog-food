@@ -5,11 +5,13 @@ export const useValueInSearch = ({
   debounceValueInApp,
   api,
   setAllProducts,
+  setError
 }) => {
   useEffect(() => {
     if (debounceValueInApp === undefined) return;
     api
       .getProductsByQuery(debounceValueInApp)
-      .then((data) => setAllProducts(data));
+      .then((data) => setAllProducts(data))
+      .catch((error) => setError(true));
   }, [debounceValueInApp]);
 };
