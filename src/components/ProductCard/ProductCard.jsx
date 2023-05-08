@@ -1,5 +1,5 @@
 import React from 'react';
-import './index.css';
+import './index.sass';
 import { ReactComponent as Like } from './img/like.svg';
 
 export const ProductCard = ({
@@ -29,7 +29,7 @@ export const ProductCard = ({
         <Like />
       </button>
       <a href="/" className="product__card__link">
-        <img src={pictures} className="product__card__image" />
+        <img src={pictures} alt="like" className="product__card__image" />
         <p className="product__card__price">{price} ₽</p>
         <p className="product__card__wight">{wight}</p>
         <p className="product__card__name">{name}</p>

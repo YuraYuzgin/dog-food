@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './App.css';
+import './App.sass';
 import { AllCardsList } from './components/AllCardsList/AllCardsList';
 import { Header } from './components/Header/Header';
 import { api } from './utils/api';

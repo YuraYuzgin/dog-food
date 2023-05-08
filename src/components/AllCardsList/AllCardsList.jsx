@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProductCard } from '../ProductCard/ProductCard';
-import './index.css';
+import './index.sass';
 
 export const AllCardsList = ({ userId, allProducts, changeLike }) => {
   return (

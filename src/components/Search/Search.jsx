@@ -1,4 +1,4 @@
-import './index.css';
+import './index.sass';
 import iconClose from './img/ic-close-input.svg';
 
 export const Search = ({ setSearch }) => {
@@ -13,6 +13,7 @@ export const Search = ({ setSearch }) => {
       {/* Надо ещё добавить удаление текста из строки поиска */}
       <img
         src={iconClose}
+        alt="close"
         className="search__icon_close"
         onClick={() => setSearch('')}
       />

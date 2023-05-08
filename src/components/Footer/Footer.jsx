@@ -1,6 +1,6 @@
 import React from 'react';
 import { Logo } from '../Logo/logo';
-import './index.css';
+import './index.sass';
 import iconTelegram from './img/icon_telegram.svg';
 import iconWhatsapp from './img/icon_whatsapp.svg';
 import iconViber from './img/icon_viber.svg';

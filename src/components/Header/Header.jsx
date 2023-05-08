@@ -1,6 +1,6 @@
 import React from 'react';
 import { Logo } from '../Logo/logo';
-import './index.css';
+import './index.sass';
 import { Search } from '../Search/Search';
 import iconFavorites from './img/favorites.svg';
 import iconCart from './img/cart.svg';
@@ -14,13 +14,13 @@ export const Header = ({ setSearch }) => {
         <Search setSearch={setSearch} />
         <div className="header__icons">
           <div>
-            <img src={iconFavorites} />
+            <img src={iconFavorites} alt="favorites" />
           </div>
           <div>
-            <img src={iconCart} />
+            <img src={iconCart} alt="cart" />
           </div>
           <div>
-            <img src={iconProfile} />
+            <img src={iconProfile} alt="profile" />
           </div>
         </div>
       </div>
