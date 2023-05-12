@@ -14,7 +14,7 @@ export const useUserAndProductsData = ({
         setUser(userData);
         setAllProducts(productsData.products);
       })
-      .catch((error) => setError(true))
+      .catch(() => setError(true))
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [setAllProducts]);
 };

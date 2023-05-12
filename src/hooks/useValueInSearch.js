@@ -12,6 +12,6 @@ export const useValueInSearch = ({
     api
       .getProductsByQuery(debounceValueInApp)
       .then((data) => setAllProducts(data))
-      .catch((error) => setError(true));
+      .catch(() => setError(true));
   }, [debounceValueInApp]);
 };

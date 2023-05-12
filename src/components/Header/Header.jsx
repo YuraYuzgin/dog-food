@@ -9,7 +9,7 @@ import iconProfile from './img/profile.svg';
 export const Header = ({ setSearch }) => {
   return (
     <header className="header">
-      <div className="container">
+      <div className="header__container">
         <Logo />
         <Search setSearch={setSearch} />
         <div className="header__icons">

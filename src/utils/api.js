@@ -8,8 +8,8 @@ const config = {
 };
 
 const onResponse = (res) => res.json();
-// const fetchError = (error) => console.log(error.message);
-const fetchError = (res) => {
+
+const fetchError = () => {
   return Promise.reject('Ошибка связи с сервером');
 };
 
@@ -40,6 +40,15 @@ class Api {
   // Поиск товаров
   getProductsByQuery(path) {
     return fetch(`${this.baseUrl}/products/search?query=${path}`, {
+      headers: this.headers,
+    })
+      .then(onResponse)
+      .catch(fetchError);
+  }
+
+  // Получение товaра по id
+  getProductById(id) {
+    return fetch(`${this.baseUrl}/products/${id}`, {
       headers: this.headers,
     })
       .then(onResponse)

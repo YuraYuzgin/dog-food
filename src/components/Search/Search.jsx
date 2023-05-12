@@ -1,21 +1,35 @@
+import { useState } from 'react';
 import './index.sass';
 import iconClose from './img/ic-close-input.svg';
 
 export const Search = ({ setSearch }) => {
+  const [value, setValue] = useState('');
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+    setSearch(e.target.value);
+  };
+
+  const handleClear = () => {
+    setValue('');
+    setSearch('');
+  };
+
   return (
     <div className="search__container">
       <input
         type="text"
         placeholder="Поиск"
-        onChange={(e) => setSearch(e.target.value)}
+        value={value}
+        onChange={handleChange}
+
         className="search__input"
       />
-      {/* Надо ещё добавить удаление текста из строки поиска */}
       <img
         src={iconClose}
         alt="close"
         className="search__icon_close"
-        onClick={() => setSearch('')}
+        onClick={handleClear}
       />
     </div>
   );
