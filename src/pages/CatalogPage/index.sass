@@ -13,6 +13,7 @@
     margin-bottom: 20px
 
 .sort__cards__wrapper
+    box-sizing: border-box
     display: flex
     flex-direction: row
     align-items: center
@@ -27,5 +28,47 @@
 .sort_item
     display: flex
     align-items: center
+    width: content
     color: #7B8E98
     cursor: pointer
+
+.sort_up
+    width: 6px
+
+.sort_down
+    width: 6px
+
+.sort__cards__large
+    display: flex
+
+.sort__cards__small
+    display: none
+
+@media only screen and (max-width : 870px)
+    .sort_item
+        width: min-content
+
+@media only screen and (max-width : 690px)
+    .sort__cards__wrapper
+        position: relative
+        justify-content: center
+        .sort_up
+            position: absolute
+            width: 7px
+            height: 9px
+            left: 23px
+            top: 15px
+        .sort_down
+            position: absolute
+            width: 7px
+            height: 9px
+            left: 23px
+            bottom: 15px
+        .current_sort
+            cursor: pointer
+
+    .sort__cards__large
+        display: none
+
+    .sort__cards__small
+        display: flex

@@ -1,7 +1,11 @@
 import React from 'react';
+import { useState } from 'react';
 import { AllCardsList } from '../../components/AllCardsList/AllCardsList';
 import { NoProductsByQuery } from '../../components/NoProductsByQuery/NoProductsByQuery';
 import './index.sass';
+import iconSortUp from './img/sort-up-solid.svg';
+import iconSortDown from './img/sort-down-solid.svg';
+import { changeWordByQuantity } from '../../utils/changeWordByQuantity';
 
 export const CatalogPage = ({
   user,
@@ -9,22 +13,19 @@ export const CatalogPage = ({
   changeLike,
   search,
   doSorting,
-  setSearch
+  setSearch,
 }) => {
-  // Изменеие окончания слова в зависимости от количества товаров
-  const changeWordByQuantity = (count) => {
-    const remainder = count % 10;
-    if (!remainder || !count) {
-      return ' товаров';
+  const [currentSort, setCurrentSort] = useState(0);
+
+  // Изменение сортировки на маленьких экранах
+  const sortChange = (upOrDown) => {
+    if (upOrDown === 'up') {
+      if (currentSort === 5) setCurrentSort(0);
+      if (currentSort < 5) setCurrentSort(currentSort + 1);
     }
-    if (remainder === 1) {
-      return ' товар';
-    }
-    if (remainder > 1 && remainder < 5) {
-      return ' товара';
-    }
-    if (remainder >= 5 && remainder <= 9) {
-      return ' товаров';
+    if (upOrDown === 'down') {
+      if (currentSort === 0) setCurrentSort(5);
+      if (currentSort > 0) setCurrentSort(currentSort - 1);
     }
   };
 
@@ -40,7 +41,6 @@ export const CatalogPage = ({
 
   return (
     <div className="catalog__page">
-
       {/* Информация о количесиве найденных товаров */}
       {!!search && (
         <p className="info_by_search">
@@ -52,19 +52,48 @@ export const CatalogPage = ({
       )}
 
       {/* Уведомледние об отсутсвии продуктов по запросу */}
-      {(allProducts.length === 0 && search) && <NoProductsByQuery setSearch={setSearch} />}
+      {allProducts.length === 0 && search && (
+        <NoProductsByQuery setSearch={setSearch} />
+      )}
 
-      {(allProducts.length > 0) && <div className="sort__cards__wrapper">
-        {sortArray.map((e) => (
-          <span
-            className="sort_item"
-            key={e.id}
-            onClick={() => doSorting(e.id)}
+      {/* Сортировка на экранах от 680px */}
+      {allProducts.length > 0 && (
+        <div className="sort__cards__wrapper sort__cards__large">
+          {sortArray.map((e) => (
+            <span
+              className="sort_item"
+              key={e.id}
+              onClick={() => doSorting(e.id)}
+            >
+              {e.title}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Сортировка на экранах до 680px */}
+      {allProducts.length > 0 && (
+        <div className="sort__cards__wrapper sort__cards__small">
+          <img
+            className="sort_up"
+            onClick={() => sortChange('up')}
+            src={iconSortUp}
+            alt="arrow up"
+          />
+          <img
+            className="sort_down"
+            onClick={() => sortChange('down')}
+            src={iconSortDown}
+            alt="arrow down"
+          />
+          <p
+            className="current_sort"
+            onClick={() => doSorting(sortArray[currentSort].id)}
           >
-            {e.title}
-          </span>
-        ))}
-      </div>}
+            {sortArray[currentSort].title}
+          </p>
+        </div>
+      )}
 
       <AllCardsList
         userId={user._id}
