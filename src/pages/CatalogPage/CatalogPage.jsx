@@ -47,7 +47,7 @@ export const CatalogPage = ({
           По запросу <b>{search}</b>{' '}
           {allProducts.length === 1 ? 'найден ' : 'найдено '}
           {allProducts.length}
-          {changeWordByQuantity(allProducts.length)}
+          {changeWordByQuantity(allProducts.length, 'товар')}
         </p>
       )}
 

@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { CatalogPage } from '../pages/CatalogPage/CatalogPage';
 import { ProductPage } from '../pages/ProductPage/ProductPage';
+import { NotFoundPage } from '../pages/NotFoundPage/NotFoundPage';
 
 export const Router = ({
   isAuthorized,
@@ -10,7 +11,7 @@ export const Router = ({
   setError,
   search,
   doSorting,
-  setSearch
+  setSearch,
 }) => {
   return (
     <>
@@ -31,9 +32,15 @@ export const Router = ({
           />
           <Route
             path="/product/:id"
-            element={<ProductPage setError={setError} />}
+            element={
+              <ProductPage
+                setError={setError}
+                user={user}
+                changeLike={changeLike}
+              />
+            }
           />
-          <Route path="*" element={<div>NOT FOUND 404</div>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       ) : (
         <Routes>

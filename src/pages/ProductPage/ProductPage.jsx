@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Product } from '../../components/Product/Product';
 import { api } from '../../utils/api';
 
-export const ProductPage = ({ setError }) => {
+export const ProductPage = ({ setError, user, changeLike }) => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
 
@@ -14,5 +14,5 @@ export const ProductPage = ({ setError }) => {
       .catch(() => setError(true));
   }, [id]);
 
-  return <Product product={product} />;
+  return (!!Object.keys(product).length && <Product product={product} user={user} changeLike={changeLike} />);
 };

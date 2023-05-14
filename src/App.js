@@ -8,6 +8,7 @@ import { useUserAndProductsData } from './hooks/useUserAndProductsData';
 import { useValueInSearch } from './hooks/useValueInSearch';
 import { ErrorFetch } from './components/ErrorFetch/ErrorFetch';
 import { Router } from './router/Router';
+import { ratingProduct } from './utils/ratingProduct';
 
 function App() {
   const [user, setUser] = useState({});
@@ -34,6 +35,7 @@ function App() {
 
   // Добавление/удаление лайка
   const changeLike = async (product, isLike) => {
+    try {
     const updatedProduct = await api.changeLike(product._id, isLike);
     const index = allProducts.findIndex((e) => e._id === updatedProduct._id);
     if (index !== -1) {
@@ -43,17 +45,10 @@ function App() {
         ...state.slice(index + 1),
       ]);
     }
-  };
-
-  const ratingProduct = (reviews) => {
-    if (!reviews || !reviews.length) {
-      return 0;
+    return isLike;
+    } catch (e) {
+      console.log('Ошибка связи с сервером.');
     }
-    const sumReviews = reviews.reduce(
-      (accumulator, elem) => accumulator + elem.rating,
-      0
-    );
-    return sumReviews / reviews.length;
   };
 
   // Сортировка продуктов
