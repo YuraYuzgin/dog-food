@@ -16,6 +16,7 @@ export const CatalogPage = ({
   setSearch,
 }) => {
   const [currentSort, setCurrentSort] = useState(0);
+  const [isActive, setIsActive] = useState(-1);
 
   // Изменение сортировки на маленьких экранах
   const sortChange = (upOrDown) => {
@@ -31,12 +32,12 @@ export const CatalogPage = ({
 
   // Массив категорий сортировки
   const sortArray = [
-    { id: 'popular', title: 'Популярные' },
-    { id: 'novelties', title: 'Новинки' },
-    { id: 'cheapFirst', title: 'Сначала дешёвые' },
-    { id: 'expensiveFirst', title: 'Сначала дорогие' },
-    { id: 'byRating', title: 'По рейтингу' },
-    { id: 'byDiscount', title: 'По скидке' },
+    { id: 'popular', title: 'Популярные', isActive: false },
+    { id: 'novelties', title: 'Новинки', isActive: false },
+    { id: 'cheapFirst', title: 'Сначала дешёвые', isActive: false },
+    { id: 'expensiveFirst', title: 'Сначала дорогие', isActive: false },
+    { id: 'byRating', title: 'По рейтингу', isActive: false },
+    { id: 'byDiscount', title: 'По скидке', isActive: false },
   ];
 
   return (
@@ -59,11 +60,14 @@ export const CatalogPage = ({
       {/* Сортировка на экранах от 680px */}
       {allProducts.length > 0 && (
         <div className="sort__cards__wrapper sort__cards__large">
-          {sortArray.map((e) => (
+          {sortArray.map((e, index) => (
             <span
-              className="sort_item"
+              className={`sort_item ${(isActive === index) && 'sort_item__active'}`}
               key={e.id}
-              onClick={() => doSorting(e.id)}
+              onClick={() => {
+                setIsActive(index);
+                doSorting(e.id);
+              }}
             >
               {e.title}
             </span>
