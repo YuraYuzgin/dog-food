@@ -5,7 +5,7 @@
     display: flex
     align-items: center
     gap: 40px
-    margin-left: 20px 
+    margin-left: 20px
 
 .header__container
   height: 100%
@@ -14,3 +14,24 @@
   display: flex
   align-items: center
   justify-content: space-between
+  &__favorites
+    position: relative
+    .favorites__bubble
+      position: absolute
+      box-sizing: border-box
+      display: flex
+      justify-content: center
+      align-items: center
+      padding: 2px 5px 3px 6px
+      left: calc(50% - 19px/2 + 10px)
+      top: -4px
+      background: #01A54E
+      border: 1px solid #FFE44D
+      border-radius: 20px
+      width: 23px
+      height: 16px
+      font-weight: 600
+      font-size: 10px
+      line-height: 12px
+      text-align: center
+      color: #FFFFFF

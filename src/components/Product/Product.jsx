@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/userContext';
-import { useNavigate } from 'react-router-dom';
 import './index.sass';
-import iconLeftArrow from './img/ic-left-arrow.svg';
 import { ratingProduct } from '../../utils/ratingProduct';
 import { reviewsCount } from '../../utils/reviewsCount';
 import { changeWordByQuantity } from '../../utils/changeWordByQuantity';
@@ -12,15 +10,13 @@ import truck from './img/ic-truck.svg';
 import quality from './img/ic-quality.svg';
 import { ReactComponent as Like } from '../ProductCard/img/like.svg';
 import { ProductCardContext } from '../../context/productCardContext';
+import { BtnBack } from '../Buttons/BtnBack/BtnBack';
 
 export const Product = ({ product }) => {
   const [isLike, setIsLike] = useState(false);
 
   const user = useContext(UserContext);
   const { changeLike } = useContext(ProductCardContext);
-
-  const navigate = useNavigate();
-  const back = () => navigate(-1);
 
   // Проверяем, добавлен ли в избранное товар
   useEffect(() => {
@@ -36,10 +32,7 @@ export const Product = ({ product }) => {
   return (
     <div className="product">
       <div className="product__header">
-        <div onClick={() => back()} className="product__header__btn_back">
-          <img src={iconLeftArrow} alt="left arrow" />
-          <span className="product__btn_back__text">Назад</span>
-        </div>
+        <BtnBack />
         <h2 className="product__header__name">{product.name}</h2>
         <div className="product__header__rating_and_reviews_count">
           <span className="product__header__rating">

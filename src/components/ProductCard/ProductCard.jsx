@@ -1,9 +1,10 @@
 import React from 'react';
 import { useContext } from 'react';
-import { UserContext } from '../../context/userContext';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../context/userContext';
 import './index.sass';
 import { ReactComponent as Like } from './img/like.svg';
+import basket from '../../assets/img/ic-trash.svg';
 
 export const ProductCard = ({
   pictures,
@@ -14,6 +15,7 @@ export const ProductCard = ({
   changeLike,
   likes,
   discount,
+  isFavorite,
 }) => {
   const user = useContext(UserContext);
   const isLike = likes.some((e) => e === user._id);
@@ -30,14 +32,21 @@ export const ProductCard = ({
           <span className="product__card__tags__new">Новинка</span>
         )}
       </div>
-      <button
-        onClick={clickChangeLike}
-        className={`product__card__like ${
-          isLike ? 'product__card__like_active' : ''
-        }`}
-      >
-        <Like />
-      </button>
+      {!isFavorite ? (
+        <button
+          onClick={clickChangeLike}
+          className={`product__card__like ${
+            isLike ? 'product__card__like_active' : ''
+          }`}
+        >
+          <Like />
+        </button>
+      ) : (
+        <button onClick={clickChangeLike} className="product__card__trash">
+          <img src={basket} alt="basket" />
+        </button>
+      )}
+
       <Link to={`/product/${product._id}`} className="product__card__link">
         <img src={pictures} alt="like" className="product__card__image" />
         {!!discount ? (

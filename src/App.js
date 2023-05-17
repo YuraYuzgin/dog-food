@@ -20,6 +20,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   // не доработано
   const [isAuthorized, setIsAuthorized] = useState(true);
+  const [favorites, setFavorites] = useState([]);
 
   const debounceValueInApp = useDebounce(search);
 
@@ -30,6 +31,7 @@ function App() {
     setAllProducts,
     setError,
     setIsLoading,
+    setFavorites,
   });
 
   // Отслеживание изменения запроса продуктов, выполнение запроса
@@ -46,6 +48,12 @@ function App() {
           updatedProduct,
           ...state.slice(index + 1),
         ]);
+      }
+      if (isLike === true) {
+        setFavorites(favorites.filter((e) => e._id !== product._id));
+      }
+      if (isLike === false) {
+        setFavorites([...favorites, product]);  
       }
       return isLike;
     } catch (e) {
@@ -94,13 +102,14 @@ function App() {
     doSorting,
     search,
     setSearch,
+    favorites,
   };
 
   return (
     <div className="App">
       <ProductCardContext.Provider value={cardInfo}>
         <UserContext.Provider value={user}>
-          <Header setSearch={setSearch} />
+          <Header setSearch={setSearch} favorites={favorites} />
           {!!error && <ErrorFetch />}
           <main className="container">
             {isLoading && <p className="loading">Загрузка...</p>}
