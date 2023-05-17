@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Создание паузы между введением символа в поле запроса и отправкой запроса на сервер
 export const useDebounce = (path) => {

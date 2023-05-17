@@ -1,10 +1,11 @@
 import React from 'react';
+import { useContext } from 'react';
+import { UserContext } from '../../context/userContext';
 import { Link } from 'react-router-dom';
 import './index.sass';
 import { ReactComponent as Like } from './img/like.svg';
 
 export const ProductCard = ({
-  userId,
   pictures,
   price,
   wight,
@@ -14,7 +15,8 @@ export const ProductCard = ({
   likes,
   discount,
 }) => {
-  const isLike = likes.some((e) => e === userId);
+  const user = useContext(UserContext);
+  const isLike = likes.some((e) => e === user._id);
   const clickChangeLike = () => {
     changeLike(product, isLike);
   };

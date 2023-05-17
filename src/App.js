@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { UserContext } from './context/userContext';
+import { ProductCardContext } from './context/productCardContext';
 import './App.sass';
 import { Header } from './components/Header/Header';
 import { api } from './utils/api';
@@ -36,16 +38,16 @@ function App() {
   // Добавление/удаление лайка
   const changeLike = async (product, isLike) => {
     try {
-    const updatedProduct = await api.changeLike(product._id, isLike);
-    const index = allProducts.findIndex((e) => e._id === updatedProduct._id);
-    if (index !== -1) {
-      setAllProducts((state) => [
-        ...state.slice(0, index),
-        updatedProduct,
-        ...state.slice(index + 1),
-      ]);
-    }
-    return isLike;
+      const updatedProduct = await api.changeLike(product._id, isLike);
+      const index = allProducts.findIndex((e) => e._id === updatedProduct._id);
+      if (index !== -1) {
+        setAllProducts((state) => [
+          ...state.slice(0, index),
+          updatedProduct,
+          ...state.slice(index + 1),
+        ]);
+      }
+      return isLike;
     } catch (e) {
       console.log('Ошибка связи с сервером.');
     }
@@ -87,24 +89,34 @@ function App() {
     }
   };
 
+  const cardInfo = {
+    changeLike,
+    doSorting,
+    search,
+    setSearch,
+  };
+
   return (
     <div className="App">
-      <Header setSearch={setSearch} />
-      {!!error && <ErrorFetch />}
-      <main className="container">
-        {isLoading && <p className="loading">Загрузка...</p>}
-        <Router
-          isAuthorized={isAuthorized}
-          user={user}
-          allProducts={allProducts}
-          changeLike={changeLike}
-          setError={changeLike}
-          search={search}
-          doSorting={doSorting}
-          setSearch={setSearch}
-        />
-      </main>
-      <Footer />
+      <ProductCardContext.Provider value={cardInfo}>
+        <UserContext.Provider value={user}>
+          <Header setSearch={setSearch} />
+          {!!error && <ErrorFetch />}
+          <main className="container">
+            {isLoading && <p className="loading">Загрузка...</p>}
+            <Router
+              isAuthorized={isAuthorized}
+              allProducts={allProducts}
+              changeLike={changeLike}
+              setError={changeLike}
+              search={search}
+              doSorting={doSorting}
+              setSearch={setSearch}
+            />
+          </main>
+          <Footer />
+        </UserContext.Provider>
+      </ProductCardContext.Provider>
     </div>
   );
 }

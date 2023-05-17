@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../../context/userContext';
 import { useNavigate } from 'react-router-dom';
 import './index.sass';
 import iconLeftArrow from './img/ic-left-arrow.svg';
@@ -10,9 +11,13 @@ import plus from './img/plus.svg';
 import truck from './img/ic-truck.svg';
 import quality from './img/ic-quality.svg';
 import { ReactComponent as Like } from '../ProductCard/img/like.svg';
+import { ProductCardContext } from '../../context/productCardContext';
 
-export const Product = ({ product, user, changeLike }) => {
+export const Product = ({ product }) => {
   const [isLike, setIsLike] = useState(false);
+
+  const user = useContext(UserContext);
+  const { changeLike } = useContext(ProductCardContext);
 
   const navigate = useNavigate();
   const back = () => navigate(-1);

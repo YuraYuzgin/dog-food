@@ -3,42 +3,15 @@ import { CatalogPage } from '../pages/CatalogPage/CatalogPage';
 import { ProductPage } from '../pages/ProductPage/ProductPage';
 import { NotFoundPage } from '../pages/NotFoundPage/NotFoundPage';
 
-export const Router = ({
-  isAuthorized,
-  user,
-  allProducts,
-  changeLike,
-  setError,
-  search,
-  doSorting,
-  setSearch,
-}) => {
+export const Router = ({ isAuthorized, allProducts, setError }) => {
   return (
     <>
       {isAuthorized ? (
         <Routes>
-          <Route
-            path="/"
-            element={
-              <CatalogPage
-                user={user}
-                allProducts={allProducts}
-                changeLike={changeLike}
-                search={search}
-                doSorting={doSorting}
-                setSearch={setSearch}
-              />
-            }
-          />
+          <Route path="/" element={<CatalogPage allProducts={allProducts} />} />
           <Route
             path="/product/:id"
-            element={
-              <ProductPage
-                setError={setError}
-                user={user}
-                changeLike={changeLike}
-              />
-            }
+            element={<ProductPage setError={setError} />}
           />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

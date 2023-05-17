@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState } from 'react';
 import { AllCardsList } from '../../components/AllCardsList/AllCardsList';
 import { NoProductsByQuery } from '../../components/NoProductsByQuery/NoProductsByQuery';
@@ -6,17 +6,13 @@ import './index.sass';
 import iconSortUp from './img/sort-up-solid.svg';
 import iconSortDown from './img/sort-down-solid.svg';
 import { changeWordByQuantity } from '../../utils/changeWordByQuantity';
+import { ProductCardContext } from '../../context/productCardContext';
 
-export const CatalogPage = ({
-  user,
-  allProducts,
-  changeLike,
-  search,
-  doSorting,
-  setSearch,
-}) => {
+export const CatalogPage = ({ allProducts }) => {
   const [currentSort, setCurrentSort] = useState(0);
   const [isActive, setIsActive] = useState(-1);
+
+  const { doSorting, search, setSearch } = useContext(ProductCardContext);
 
   // Изменение сортировки на маленьких экранах
   const sortChange = (upOrDown) => {
@@ -62,7 +58,9 @@ export const CatalogPage = ({
         <div className="sort__cards__wrapper sort__cards__large">
           {sortArray.map((e, index) => (
             <span
-              className={`sort_item ${(isActive === index) && 'sort_item__active'}`}
+              className={`sort_item ${
+                isActive === index && 'sort_item__active'
+              }`}
               key={e.id}
               onClick={() => {
                 setIsActive(index);
@@ -99,11 +97,7 @@ export const CatalogPage = ({
         </div>
       )}
 
-      <AllCardsList
-        userId={user._id}
-        allProducts={allProducts}
-        changeLike={changeLike}
-      />
+      <AllCardsList allProducts={allProducts} />
     </div>
   );
 };
