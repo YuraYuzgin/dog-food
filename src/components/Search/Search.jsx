@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import './index.sass';
 import iconClose from './img/ic-close-input.svg';
 
-export const Search = ({ setSearch }) => {
+export const Search = memo(({ setSearch }) => {
   const [value, setValue] = useState('');
 
   const handleChange = (e) => {
@@ -33,4 +33,4 @@ export const Search = ({ setSearch }) => {
       />
     </div>
   );
-};
+});

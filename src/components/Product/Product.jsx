@@ -29,6 +29,8 @@ export const Product = ({ product }) => {
     if (changeLike(product, isLike)) setIsLike(!isLike);
   };
 
+  const reviewsCountThisProduct = reviewsCount(product.reviews);
+
   return (
     <div className="product">
       <div className="product__header">
@@ -39,7 +41,7 @@ export const Product = ({ product }) => {
             рейтинг {Math.round(ratingProduct(product.reviews))}
           </span>
           <span className="product__header__reviews_count">
-            {reviewsCount(product.reviews)}
+            {reviewsCountThisProduct}
             {changeWordByQuantity(reviewsCount(product.reviews), 'отзыв')}
           </span>
         </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import { Logo } from '../Logo/logo';
 import './index.sass';
 import iconTelegram from './img/icon_telegram.svg';
@@ -7,7 +7,7 @@ import iconViber from './img/icon_viber.svg';
 import iconInstagram from './img/icon_instagram.svg';
 import iconVk from './img/icon_vk.svg';
 
-export const Footer = () => {
+export const Footer = memo(() => {
   return (
     <footer className="footer">
       <div className="footer__logo__wrapper">
@@ -17,16 +17,16 @@ export const Footer = () => {
         <p className="footer__copyright">© «Интернет-магазин DogFood.ru»</p>
       </div>
       <ul className="footer__list">
-        <li><a href="#">Каталог</a></li>
-        <li><a href="#">Акции</a></li>
-        <li><a href="#">Новости</a></li>
-        <li><a href="#">Отзывы</a></li>
+        <li><p>Каталог</p></li>
+        <li><p>Акции</p></li>
+        <li><p>Новости</p></li>
+        <li><p>Отзывы</p></li>
       </ul>
       <ul className="footer__list">
-        <li><a href="#">Оплата и доставка</a></li>
-        <li><a href="#">Часто спрашивают</a></li>
-        <li><a href="#">Обратная связь</a></li>
-        <li><a href="#">Контакты</a></li>
+        <li><p>Оплата и доставка</p></li>
+        <li><p>Часто спрашивают</p></li>
+        <li><p>Обратная связь</p></li>
+        <li><p>Контакты</p></li>
       </ul>
       <div className="footer__contacts">
         <h4>Мы на связи</h4>
@@ -41,32 +41,32 @@ export const Footer = () => {
 
         <ul className="footer__social">
           <li>
-            <a href="#" target="_blank">
+            <p>
               <img src={iconTelegram} alt="telegram" />
-            </a>
+            </p>
           </li>
           <li>
-            <a href="#" target="_blank">
+            <p>
               <img src={iconWhatsapp} alt="whatsapp" />
-            </a>
+            </p>
           </li>
           <li>
-            <a href="#" target="_blank">
+            <p>
               <img src={iconViber} alt="viber" />
-            </a>
+            </p>
           </li>
           <li>
-            <a href="#" target="_blank">
+            <p>
               <img src={iconInstagram} alt="instagram" />
-            </a>
+            </p>
           </li>
           <li className="footer__social__vk">
-            <a href="#" target="_blank">
+            <p>
               <img src={iconVk} alt="vk" />
-            </a>
+            </p>
           </li>
         </ul>
       </div>
     </footer>
   );
-};
+});

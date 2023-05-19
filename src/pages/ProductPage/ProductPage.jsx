@@ -13,7 +13,7 @@ export const ProductPage = ({ setError }) => {
       .getProductById(id)
       .then((productData) => setProduct(productData))
       .catch(() => setError(true));
-  }, [id]);
+  }, []);
 
   return (
     !!Object.keys(product).length && (

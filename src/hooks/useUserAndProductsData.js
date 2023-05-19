@@ -21,5 +21,5 @@ export const useUserAndProductsData = ({
       })
       .catch(() => setError(true))
       .finally(() => setIsLoading(false));
-  }, [setAllProducts]);
+  }, []);
 };
