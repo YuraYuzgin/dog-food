@@ -117,7 +117,6 @@ function App() {
               isAuthorized={isAuthorized}
               allProducts={allProducts}
               changeLike={changeLike}
-              setError={changeLike}
               search={search}
               doSorting={doSorting}
               setSearch={setSearch}

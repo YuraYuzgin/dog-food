@@ -4,7 +4,7 @@ import { ProductPage } from '../pages/ProductPage/ProductPage';
 import { FavoritesPage } from '../pages/FavoritesPage/FavoritesPage';
 import { NotFoundPage } from '../pages/NotFoundPage/NotFoundPage';
 
-export const Router = ({ isAuthorized, allProducts, setError }) => {
+export const Router = ({ isAuthorized, allProducts }) => {
   return (
     <>
       {isAuthorized ? (
@@ -13,7 +13,7 @@ export const Router = ({ isAuthorized, allProducts, setError }) => {
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route
             path="/product/:id"
-            element={<ProductPage setError={setError} />}
+            element={<ProductPage />}
           />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

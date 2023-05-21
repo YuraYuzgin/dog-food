@@ -7,10 +7,8 @@ const config = {
   },
 };
 
-const onResponse = (res) => res.json();
-
-const fetchError = () => {
-  return Promise.reject('Ошибка связи с сервером');
+const onResponse = (res) => {
+  return res.ok ? res.json() : Promise.reject('Ошибка связи с сервером');
 };
 
 class Api {
@@ -23,36 +21,28 @@ class Api {
   getUserInfoByToken() {
     return fetch(`${this.baseUrl}/users/me`, {
       headers: this.headers,
-    })
-      .then(onResponse)
-      .catch(fetchError);
+    }).then(onResponse);
   }
 
   // Получение всех товаров
   getAllProducts() {
     return fetch(`${this.baseUrl}/products`, {
       headers: this.headers,
-    })
-      .then(onResponse)
-      .catch(fetchError);
+    }).then(onResponse);
   }
 
   // Поиск товаров
   getProductsByQuery(path) {
     return fetch(`${this.baseUrl}/products/search?query=${path}`, {
       headers: this.headers,
-    })
-      .then(onResponse)
-      .catch(fetchError);
+    }).then(onResponse);
   }
 
   // Получение товaра по id
   getProductById(id) {
     return fetch(`${this.baseUrl}/products/${id}`, {
       headers: this.headers,
-    })
-      .then(onResponse)
-      .catch(fetchError);
+    }).then(onResponse);
   }
 
   // Добавление/удаление лайка
@@ -60,9 +50,24 @@ class Api {
     return fetch(`${this.baseUrl}/products/likes/${productId}`, {
       method: isLike ? 'DELETE' : 'PUT',
       headers: this.headers,
-    })
-      .then(onResponse)
-      .catch(fetchError);
+    }).then(onResponse);
+  }
+
+  // Добавление отзыва по id продукта
+  addReviewByIdProduct(productId, data) {
+    return fetch(`${this.baseUrl}/products/review/${productId}`, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify(data),
+    }).then(onResponse);
+  }
+
+  // Удаление отзыва по id
+  deleteReviewById(productId, reviewId) {
+    return fetch(`${this.baseUrl}/products/review/${productId}/${reviewId}`, {
+      method: 'DELETE',
+      headers: this.headers,
+    }).then(onResponse);
   }
 }
 

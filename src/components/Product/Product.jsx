@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/userContext';
 import './index.sass';
-import { ratingProduct } from '../../utils/ratingProduct';
 import { reviewsCount } from '../../utils/reviewsCount';
 import { changeWordByQuantity } from '../../utils/changeWordByQuantity';
 import minus from './img/minus.svg';
@@ -11,17 +10,25 @@ import quality from './img/ic-quality.svg';
 import { ReactComponent as Like } from '../ProductCard/img/like.svg';
 import { ProductCardContext } from '../../context/productCardContext';
 import { BtnBack } from '../Buttons/BtnBack/BtnBack';
+import { ratingProduct } from '../../utils/ratingProduct';
+import { RatingStars } from '../RatingStars/RatingStars';
+import { Reviews } from '../Reviews/Reviews';
 
-export const Product = ({ product }) => {
+export const Product = ({ product, sendReview, deleteReview }) => {
   const [isLike, setIsLike] = useState(false);
 
   const user = useContext(UserContext);
   const { changeLike } = useContext(ProductCardContext);
 
+  const productReviews = product.reviews;
+
   // Проверяем, добавлен ли в избранное товар
   useEffect(() => {
     setIsLike(product.likes.some((e) => e === user?._id));
   }, [product.likes, user]);
+
+  // Вычисляем количество звёзд в рейтинге
+  const countStars = Math.round(ratingProduct(productReviews));
 
   // При нажатии на кнопку изменения лайка отправляем запрос на сервер. Меняем значение isLike.
   // Если ошибкок не произошло, меняем значение isLike.
@@ -37,9 +44,9 @@ export const Product = ({ product }) => {
         <BtnBack />
         <h2 className="product__header__name">{product.name}</h2>
         <div className="product__header__rating_and_reviews_count">
-          <span className="product__header__rating">
-            рейтинг {Math.round(ratingProduct(product.reviews))}
-          </span>
+          <div className="product__header__rating_and_reviews_count__stars">
+            <RatingStars countStars={countStars} />
+          </div>
           <span className="product__header__reviews_count">
             {reviewsCountThisProduct}
             {changeWordByQuantity(reviewsCount(product.reviews), 'отзыв')}
@@ -54,7 +61,7 @@ export const Product = ({ product }) => {
           <img
             className="product__main__image"
             src={product.pictures}
-            alt="product image"
+            alt="product"
           />
         </div>
         <div className="product__main__info">
@@ -151,6 +158,7 @@ export const Product = ({ product }) => {
           </span>
         </div>
       </div>
+      <Reviews reviews={productReviews} sendReview={sendReview} deleteReview={deleteReview} />
     </div>
   );
 };
