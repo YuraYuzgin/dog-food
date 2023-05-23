@@ -7,7 +7,7 @@ import iconFavorites from './img/favorites.svg';
 import iconCart from './img/cart.svg';
 import iconProfile from './img/profile.svg';
 
-export const Header = memo(({ setSearch, favorites }) => {
+export const Header = memo(({ setSearch, favorites, setIsActiveModal }) => {
   const location = useLocation();
 
   return (
@@ -28,7 +28,9 @@ export const Header = memo(({ setSearch, favorites }) => {
             <img src={iconCart} alt="cart" />
           </div>
           <div>
-            <img src={iconProfile} alt="profile" />
+            <Link to={'/login'} onClick={() => setIsActiveModal(true)}>
+              <img src={iconProfile} alt="profile" />
+            </Link>
           </div>
         </div>
       </div>

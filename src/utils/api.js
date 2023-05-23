@@ -69,6 +69,42 @@ class Api {
       headers: this.headers,
     }).then(onResponse);
   }
+
+  // Вход в аккаунт
+  signin(data) {
+    return fetch(`${this.baseUrl}/signin`, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify(data),
+    }).then(onResponse);
+  }
+
+  // Регистрация
+  signup(data) {
+    return fetch(`${this.baseUrl}/signup`, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify(data),
+    }).then(onResponse);
+  }
+
+  // Сброс пароля
+  passwordReset(data) {
+    return fetch(`${this.baseUrl}/forgot-password`, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify(data),
+    }).then(onResponse);
+  }
+
+  // Смена пароля (с новым токеном)
+  changePassword(data, token) {
+    return fetch(`${this.baseUrl}/password-reset/${token}`, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify(data),
+    }).then(onResponse);
+  }
 }
 
 export const api = new Api(config);

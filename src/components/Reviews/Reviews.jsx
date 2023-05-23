@@ -78,6 +78,7 @@ export const Reviews = memo(({ reviews, sendReview, deleteReview }) => {
             type="text"
             placeholder="Напишите отзыв..."
           />
+          {errors?.text && <span className="product__reviews__form__error">{errors?.text.message}</span>}
           <div className="product__reviews__form__btns">
             <button className="product__reviews__btn" type="submit">
               Отправить

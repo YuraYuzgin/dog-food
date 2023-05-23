@@ -1,0 +1,72 @@
+@import '../../variables'
+
+.auth_form
+    box-sizing: border-box
+    width: 100%
+    &__header
+        padding: 8px 0 16px 0
+        &__reset_pass
+            margin-bottom: 0
+    &__form__input
+        box-sizing: border-box
+        display: flex
+        flex-direction: row
+        align-items: center
+        padding: 14px 16px
+        height: 48px
+        width: 100%
+        border: 1px solid #CFD8DC
+        border-radius: 12px
+        margin-top: 8px
+        outline: none
+        color: $color-text-main
+        font-weight: 400
+        font-size: 16px
+        line-height: 20px
+        caret-color: #FFAA0D
+        caret
+        &__errors
+            color: red
+            margin-bottom: 12px
+    &__form__reset_pass
+        text-align: right
+        margin-top: 6px
+        margin-bottom: 24px
+        &__text
+            text-decoration: none
+            color: #7B8E98
+            font-size: 14px
+            line-height: 20px
+    &__form__info
+        margin: 24px 0
+        &__text
+            font-weight: 400
+            font-size: 12px
+            line-height: 14px
+            color: #7B8E98
+            &__for_reset
+                color: #7B8E98
+                font-weight: 400
+                font-size: 14px
+                line-height: 20px
+    &__form__btns
+        display: flex
+        flex-direction: column
+        gap: 8px
+        text-decoration: none
+
+.link_style
+    text-decoration: none
+
+input::placeholder
+    color: #7B8E98
+    font-weight: 400
+    font-size: 16px
+    line-height: 20px
+
+.input__password
+    position: relative
+    &__icon_show_pass
+        position: absolute
+        top: 15px
+        right: 15px

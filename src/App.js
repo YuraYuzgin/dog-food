@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserContext } from './context/userContext';
 import { ProductCardContext } from './context/productCardContext';
 import './App.sass';
-import { Header } from './components/Header/Header';
 import { api } from './utils/api';
-import { useDebounce } from './hooks/useDebounce';
+import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
+import { useDebounce } from './hooks/useDebounce';
 import { useUserAndProductsData } from './hooks/useUserAndProductsData';
 import { useValueInSearch } from './hooks/useValueInSearch';
 import { ErrorFetch } from './components/ErrorFetch/ErrorFetch';
@@ -21,6 +21,7 @@ function App() {
   // не доработано
   const [isAuthorized, setIsAuthorized] = useState(true);
   const [favorites, setFavorites] = useState([]);
+  const [isActiveModal, setIsActiveModal] = useState(false);
 
   const debounceValueInApp = useDebounce(search);
 
@@ -53,7 +54,7 @@ function App() {
         setFavorites(favorites.filter((e) => e._id !== product._id));
       }
       if (isLike === false) {
-        setFavorites([...favorites, product]);  
+        setFavorites([...favorites, product]);
       }
       return isLike;
     } catch (e) {
@@ -105,11 +106,21 @@ function App() {
     favorites,
   };
 
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      setIsAuthorized(true);
+    }
+  }, []);
+
   return (
     <div className="App">
       <ProductCardContext.Provider value={cardInfo}>
         <UserContext.Provider value={user}>
-          <Header setSearch={setSearch} favorites={favorites} />
+          <Header
+            setSearch={setSearch}
+            favorites={favorites}
+            setIsActiveModal={setIsActiveModal}
+          />
           {!!error && <ErrorFetch />}
           <main className="container">
             {isLoading && <p className="loading">Загрузка...</p>}
@@ -120,6 +131,8 @@ function App() {
               search={search}
               doSorting={doSorting}
               setSearch={setSearch}
+              isActiveModal={isActiveModal}
+              setIsActiveModal={setIsActiveModal}
             />
           </main>
           <Footer />
