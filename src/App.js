@@ -22,6 +22,8 @@ function App() {
   const [isAuthorized, setIsAuthorized] = useState(true);
   const [favorites, setFavorites] = useState([]);
   const [isActiveModal, setIsActiveModal] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(16);
 
   const debounceValueInApp = useDebounce(search);
 
@@ -133,6 +135,10 @@ function App() {
               setSearch={setSearch}
               isActiveModal={isActiveModal}
               setIsActiveModal={setIsActiveModal}
+              page={page}
+              setPage={setPage}
+              pageSize={pageSize}
+              setPageSize={setPageSize}
             />
           </main>
           <Footer />

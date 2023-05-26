@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { AllCardsList } from '../../components/AllCardsList/AllCardsList';
 import { NoProductsByQuery } from '../../components/NoProductsByQuery/NoProductsByQuery';
 import './index.sass';
@@ -8,9 +7,16 @@ import iconSortDown from './img/sort-down-solid.svg';
 import { changeWordByQuantity } from '../../utils/changeWordByQuantity';
 import { ProductCardContext } from '../../context/productCardContext';
 
-export const CatalogPage = ({ allProducts }) => {
+export const CatalogPage = ({
+  allProducts,
+  page,
+  setPage,
+  pageSize,
+  setPageSize,
+}) => {
   const [currentSort, setCurrentSort] = useState(0);
   const [isActive, setIsActive] = useState(-1);
+  const [showProducts, setShowProducts] = useState(allProducts.slice(1, 16));
 
   const { doSorting, search, setSearch } = useContext(ProductCardContext);
 
@@ -35,6 +41,32 @@ export const CatalogPage = ({ allProducts }) => {
     { id: 'byRating', title: 'По рейтингу', isActive: false },
     { id: 'byDiscount', title: 'По скидке', isActive: false },
   ];
+
+  // Обработка изменения количества товаров на странице
+  const handleChangePageSize = (event) => {
+    setPageSize(event.target.value);
+    let newPageNumber = Math.floor((page * pageSize) / event.target.value);
+    if (newPageNumber < 1) newPageNumber = 1;
+    setPage(newPageNumber);
+  };
+
+  // Общее количество страниц
+  const countPages = Math.ceil(allProducts.length / pageSize);
+
+  // Создаём массив для отображения номеров страниц
+  const arrayPages = [];
+  for (let i = 0; i < countPages; i++) {
+    arrayPages.push(i + 1);
+  }
+
+  // Смена страницы
+  const goToCurrentPage = (event) => {
+    setPage(event.target.textContent);
+  };
+
+  useEffect(() => {
+    setShowProducts(allProducts.slice(pageSize * (page - 1), pageSize * page));
+  }, [allProducts, page, pageSize]);
 
   return (
     <div className="catalog__page">
@@ -97,7 +129,46 @@ export const CatalogPage = ({ allProducts }) => {
         </div>
       )}
 
-      <AllCardsList allProducts={allProducts} />
+      <AllCardsList allProducts={showProducts} />
+
+      <div className="pagination__wrapper">
+        <div className="page__size">
+          <span>Количество продуктов на странице: </span>
+          <select value={pageSize} onChange={handleChangePageSize}>
+            <option value="16">16</option>
+            <option value="32">32</option>
+          </select>
+        </div>
+        <div className="page__number">
+          {page > 1 && (
+            <span
+              className="change__page__on__one"
+              onClick={() => setPage(1 * page - 1)}
+            >
+              &lt;
+            </span>
+          )}
+          {arrayPages.map((e, index) => (
+            <span
+              className={`page__number__current ${
+                page - 1 === index && 'page__number__current__active'
+              }`}
+              key={index}
+              onClick={(event) => goToCurrentPage(event)}
+            >
+              {e}
+            </span>
+          ))}
+          {page < arrayPages.length && (
+            <span
+              className="change__page__on__one"
+              onClick={() => setPage(1 * page + 1)}
+            >
+              &gt;
+            </span>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

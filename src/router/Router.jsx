@@ -13,6 +13,10 @@ export const Router = ({
   allProducts,
   isActiveModal,
   setIsActiveModal,
+  page,
+  setPage,
+  pageSize,
+  setPageSize,
 }) => {
   const authRoutes = (
     <>
@@ -56,7 +60,18 @@ export const Router = ({
     <>
       {isAuthorized ? (
         <Routes>
-          <Route path="/" element={<CatalogPage allProducts={allProducts} />} />
+          <Route
+            path="/"
+            element={
+              <CatalogPage
+                allProducts={allProducts}
+                page={page}
+                setPage={setPage}
+                pageSize={pageSize}
+                setPageSize={setPageSize}
+              />
+            }
+          />
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
           {authRoutes}
