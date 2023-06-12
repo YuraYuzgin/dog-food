@@ -6,15 +6,17 @@ import { Search } from '../Search/Search';
 import iconFavorites from './img/favorites.svg';
 import iconCart from './img/cart.svg';
 import iconProfile from './img/profile.svg';
+import { useSelector } from 'react-redux';
 
-export const Header = memo(({ setSearch, favorites, setIsActiveModal }) => {
+export const Header = memo(({ setIsActiveModal }) => {
+  const favorites = useSelector((state) => state.products.favoritesProducts);
   const location = useLocation();
 
   return (
     <header className="header">
       <div className="header__container">
         <Logo />
-        {location.pathname === '/' && <Search setSearch={setSearch} />}
+        {location.pathname === '/' && <Search />}
         <div className="header__icons">
           <Link to={'/favorites'}>
             <div className="header__container__favorites">

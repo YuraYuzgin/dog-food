@@ -1,11 +1,10 @@
-import React, { useContext } from 'react';
-import { ProductCardContext } from '../../context/productCardContext';
 import { AllCardsList } from '../../components/AllCardsList/AllCardsList';
 import { BtnBack } from '../../components/Buttons/BtnBack/BtnBack';
 import './index.sass';
+import { useSelector } from 'react-redux';
 
 export const FavoritesPage = () => {
-  const { favorites } = useContext(ProductCardContext);
+  const favorites = useSelector((state) => state.products.favoritesProducts);
   return (
     <div className="favorites__page">
       <BtnBack />

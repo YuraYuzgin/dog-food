@@ -1,10 +1,10 @@
 import React from 'react';
-import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { UserContext } from '../../context/userContext';
+import { useSelector, useDispatch } from 'react-redux';
 import './index.sass';
 import { ReactComponent as Like } from './img/like.svg';
 import basket from '../../assets/img/ic-trash.svg';
+import { fetchChangeLike } from '../../storage/slices/productsSlice.js';
 
 export const ProductCard = ({
   pictures,
@@ -12,15 +12,16 @@ export const ProductCard = ({
   wight,
   name,
   product,
-  changeLike,
   likes,
   discount,
   isFavorite,
 }) => {
-  const user = useContext(UserContext);
+  const user = useSelector((state) => state.user.data);
+  const dispatch = useDispatch();
+
   const isLike = likes.some((e) => e === user._id);
   const clickChangeLike = () => {
-    changeLike(product, isLike);
+    dispatch(fetchChangeLike({product, isLike}));
   };
   return (
     <div className="product__card">

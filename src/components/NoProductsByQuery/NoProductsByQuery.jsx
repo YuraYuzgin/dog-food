@@ -1,13 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import './index.sass';
 import iconNoProducts from './img/ic-no-products.svg';
 
-export const NoProductsByQuery = ({ setSearch }) => {
-  const navigate = useNavigate();
+export const NoProductsByQuery = () => {
   const toHome = () => {
-    setSearch('');
-    navigate('/');
+    window.location.replace(window.location.origin);
   };
   return (
     <div className="no__product">

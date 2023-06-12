@@ -3,7 +3,7 @@ import './index.sass';
 import closeModal from './img/ic-close-modal.svg';
 
 export const Modal = ({ isActiveModal, setIsActiveModal, children }) => {
-  useEffect(() => setIsActiveModal(true), []);
+  useEffect(() => setIsActiveModal(true), [setIsActiveModal]);
 
   const closeByEscape = useCallback(
     (e) => {

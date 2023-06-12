@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../context/userContext';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.sass';
 import { reviewsCount } from '../../utils/reviewsCount';
 import { changeWordByQuantity } from '../../utils/changeWordByQuantity';
@@ -8,17 +8,16 @@ import plus from './img/plus.svg';
 import truck from './img/ic-truck.svg';
 import quality from './img/ic-quality.svg';
 import { ReactComponent as Like } from '../ProductCard/img/like.svg';
-import { ProductCardContext } from '../../context/productCardContext';
 import { BtnBack } from '../Buttons/BtnBack/BtnBack';
 import { ratingProduct } from '../../utils/ratingProduct';
 import { RatingStars } from '../RatingStars/RatingStars';
 import { Reviews } from '../Reviews/Reviews';
+import { fetchChangeLike } from '../../storage/slices/productsSlice';
 
 export const Product = ({ product, sendReview, deleteReview }) => {
   const [isLike, setIsLike] = useState(false);
-
-  const user = useContext(UserContext);
-  const { changeLike } = useContext(ProductCardContext);
+  const user = useSelector((state) => state.user.data);
+  const dispatch = useDispatch();
 
   const productReviews = product.reviews;
 
@@ -33,7 +32,7 @@ export const Product = ({ product, sendReview, deleteReview }) => {
   // При нажатии на кнопку изменения лайка отправляем запрос на сервер. Меняем значение isLike.
   // Если ошибкок не произошло, меняем значение isLike.
   const clickChangeLike = () => {
-    if (changeLike(product, isLike)) setIsLike(!isLike);
+    if (dispatch(fetchChangeLike({product, isLike}))) setIsLike(!isLike);
   };
 
   const reviewsCountThisProduct = reviewsCount(product.reviews);
@@ -158,7 +157,11 @@ export const Product = ({ product, sendReview, deleteReview }) => {
           </span>
         </div>
       </div>
-      <Reviews reviews={productReviews} sendReview={sendReview} deleteReview={deleteReview} />
+      <Reviews
+        reviews={productReviews}
+        sendReview={sendReview}
+        deleteReview={deleteReview}
+      />
     </div>
   );
 };

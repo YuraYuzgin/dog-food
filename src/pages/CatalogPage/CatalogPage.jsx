@@ -1,24 +1,22 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AllCardsList } from '../../components/AllCardsList/AllCardsList';
 import { NoProductsByQuery } from '../../components/NoProductsByQuery/NoProductsByQuery';
 import './index.sass';
 import iconSortUp from './img/sort-up-solid.svg';
 import iconSortDown from './img/sort-down-solid.svg';
 import { changeWordByQuantity } from '../../utils/changeWordByQuantity';
-import { ProductCardContext } from '../../context/productCardContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { doSorting } from '../../storage/slices/productsSlice';
 
-export const CatalogPage = ({
-  allProducts,
-  page,
-  setPage,
-  pageSize,
-  setPageSize,
-}) => {
+export const CatalogPage = ({ page, setPage, pageSize, setPageSize }) => {
+  const allProducts = useSelector((state) => state.products.products);
+  console.log(allProducts);
+  const search = useSelector((state) => state.products.searchQuery);
   const [currentSort, setCurrentSort] = useState(0);
   const [isActive, setIsActive] = useState(-1);
   const [showProducts, setShowProducts] = useState(allProducts.slice(1, 16));
 
-  const { doSorting, search, setSearch } = useContext(ProductCardContext);
+  const dispatch = useDispatch();
 
   // Изменение сортировки на маленьких экранах
   const sortChange = (upOrDown) => {
@@ -82,7 +80,7 @@ export const CatalogPage = ({
 
       {/* Уведомледние об отсутсвии продуктов по запросу */}
       {allProducts.length === 0 && search && (
-        <NoProductsByQuery setSearch={setSearch} />
+        <NoProductsByQuery />
       )}
 
       {/* Сортировка на экранах от 680px */}
@@ -96,7 +94,7 @@ export const CatalogPage = ({
               key={e.id}
               onClick={() => {
                 setIsActive(index);
-                doSorting(e.id);
+                dispatch(doSorting(e.id));
               }}
             >
               {e.title}
@@ -122,7 +120,7 @@ export const CatalogPage = ({
           />
           <p
             className="current_sort"
-            onClick={() => doSorting(sortArray[currentSort].id)}
+            onClick={() => dispatch(doSorting(sortArray[currentSort].id))}
           >
             {sortArray[currentSort].title}
           </p>

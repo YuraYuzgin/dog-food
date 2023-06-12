@@ -7,10 +7,10 @@ import { Modal } from '../components/Modal/Modal';
 import { LoginForm } from '../components/Auth/LoginForm/LoginForm';
 import { RegistrationForm } from '../components/Auth/RegistrationForm/RegistrationForm';
 import { ResetPasswordForm } from '../components/Auth/ResetPasswordForm/ResetPasswordForm';
+import { ProfilePage } from '../pages/ProfilePage/ProfilePage';
 
 export const Router = ({
   isAuthorized,
-  allProducts,
   isActiveModal,
   setIsActiveModal,
   page,
@@ -64,7 +64,6 @@ export const Router = ({
             path="/"
             element={
               <CatalogPage
-                allProducts={allProducts}
                 page={page}
                 setPage={setPage}
                 pageSize={pageSize}
@@ -72,6 +71,7 @@ export const Router = ({
               />
             }
           />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
           {authRoutes}

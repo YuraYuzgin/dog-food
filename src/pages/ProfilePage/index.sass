@@ -1,0 +1,67 @@
+@import '../../variables'
+
+.profile
+    padding-left: 126px
+    padding-right: 126px
+    &__header
+        color: $color-text-main
+        font-weight: 700
+        font-size: 28px
+        line-height: 32px
+        margin-bottom: 20px
+    &__avatar
+        width: 500px
+        margin-bottom: 8px
+    &__name
+        color: $color-text-main
+        font-weight: 700
+        font-size: 20px
+        line-height: 24px
+        margin-bottom: 8px
+    &__about
+        color: $color-text-main
+        font-weight: 500
+        font-size: 18px
+        line-height: 20px
+        margin-bottom: 8px
+    &__email__wrapper
+        display: flex
+        align-items: center
+        margin-bottom: 34px
+    &__email
+        color: #7B8E98
+        font-weight: 400
+        font-size: 18px
+        line-height: 20px
+        margin-bottom: 3px
+        margin-left: 10px
+    &__btn
+        box-sizing: border-box
+        display: flex
+        flex-direction: row
+        justify-content: center
+        align-items: center
+        padding: 9px 16px
+        width: 89px
+        height: 32px
+        border: 1px solid #CFD8DC
+        border-radius: 87px
+        background-color: #fff
+        color: $color-text-main
+        font-weight: 700
+        font-size: 12px
+        line-height: 14px
+        cursor: pointer
+        margin-bottom: 20px
+
+@media only screen and (max-width : 920px)
+    .profile
+        padding-left: 60px
+        padding-right: 60px
+
+@media only screen and (max-width : 790px)
+    .profile
+        padding-left: 0
+        padding-right: 0
+        &__avatar
+            width: 400px

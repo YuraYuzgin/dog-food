@@ -1,13 +1,16 @@
 import { useState, memo } from 'react';
 import './index.sass';
 import iconClose from './img/ic-close-input.svg';
+import { useDispatch } from 'react-redux';
+import {setSearch} from '../../storage/slices/productsSlice'
 
-export const Search = memo(({ setSearch }) => {
+export const Search = memo(() => {
   const [value, setValue] = useState('');
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setValue(e.target.value);
-    setSearch(e.target.value);
+    dispatch(setSearch(e.target.value));
   };
 
   const handleClear = () => {
@@ -22,7 +25,6 @@ export const Search = memo(({ setSearch }) => {
         placeholder="Поиск"
         value={value}
         onChange={handleChange}
-
         className="search__input"
       />
       <img

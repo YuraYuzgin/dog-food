@@ -1,9 +1,9 @@
-import React, { memo, useContext, useState } from 'react';
+import React, { memo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useSelector } from 'react-redux';
 import './index.sass';
 import { RatingStars } from '../RatingStars/RatingStars';
 import { ReactComponent as Basket } from '../../assets/img/ic-trash.svg';
-import { UserContext } from '../../context/userContext';
 
 export const Reviews = memo(({ reviews, sendReview, deleteReview }) => {
   const [showForm, setShowForm] = useState(false);
@@ -11,7 +11,7 @@ export const Reviews = memo(({ reviews, sendReview, deleteReview }) => {
   const [wasClick, setWasClick] = useState(false);
   const [ratingAfterClick, setRatingAfterClick] = useState(3);
 
-  const user = useContext(UserContext);
+  const user = useSelector((state) => state.user.data);
 
   const reviewsSort = reviews.sort(
     (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
@@ -78,7 +78,11 @@ export const Reviews = memo(({ reviews, sendReview, deleteReview }) => {
             type="text"
             placeholder="Напишите отзыв..."
           />
-          {errors?.text && <span className="product__reviews__form__error">{errors?.text.message}</span>}
+          {errors?.text && (
+            <span className="product__reviews__form__error">
+              {errors?.text.message}
+            </span>
+          )}
           <div className="product__reviews__form__btns">
             <button className="product__reviews__btn" type="submit">
               Отправить
