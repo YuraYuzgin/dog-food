@@ -8,12 +8,15 @@ import {
   emailRegister,
   passwordRegister,
   groupRegister,
-} from '../../../validator/authValidator';
+} from '../../../validator/formValidator';
 import eye from '../../../assets/img/eye.svg';
 import eyeSlash from '../../../assets/img/eye-slash.svg';
+import { useDispatch } from 'react-redux';
+import { addUserError } from '../../../storage/slices/userSlice';
 
 export const RegistrationForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -26,7 +29,7 @@ export const RegistrationForm = () => {
       await api.signup(data);
       window.location.replace(`${window.location.origin}/login`);
     } catch (error) {
-      alert('Ошибка.');
+      dispatch(addUserError(error));
     }
   };
 

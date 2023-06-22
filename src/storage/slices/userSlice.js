@@ -1,38 +1,72 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { isLoading, isError } from '../utilsStore';
+import { isError } from '../utilsStore';
 
 const initialState = {
   data: {},
-  loading: false,
 };
 
-// actions
 export const getUser = createAsyncThunk(
   'user/getUser',
-  async function (dataFromUp, { extra }) {
-    const data = await extra.getUserInfoByToken();
-    return data;
+  async function (data, { extra, fulfillWithValue, rejectWithValue }) {
+    try {
+      const res = await extra.getUserInfoByToken();
+      return fulfillWithValue(res);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const fetchChangeAvatar = createAsyncThunk(
+  'user/fetchChangeAvatar',
+  async function (data, { extra, fulfillWithValue, rejectWithValue }) {
+    try {
+      const res = await extra.changeAvatar(data);
+      return fulfillWithValue(res);
+    } catch (error) {
+      rejectWithValue(error);
+    }
+  }
+);
+
+export const fetchChangeUserInfo = createAsyncThunk(
+  'user/fetchChangeUserInfo',
+  async function (data, { extra, fulfillWithValue, rejectWithValue }) {
+    try {
+      const res = await extra.changeUserInfo(data);
+      return fulfillWithValue(res);
+    } catch (error) {
+      rejectWithValue(error);
+    }
   }
 );
 
 const userSlice = createSlice({
   name: 'user',
   initialState: initialState,
+  reducers: {
+    addUserError: (state, action) => {
+      state.error = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getUser.fulfilled, (state, action) => {
       state.data = action.payload;
-      state.loading = false;
+    });
+
+    builder.addCase(fetchChangeAvatar.fulfilled, (state, action) => {
+      state.data = action.payload;
+    });
+
+    builder.addCase(fetchChangeUserInfo.fulfilled, (state, action) => {
+      state.data = action.payload;
     });
 
     builder.addMatcher(isError, (state, action) => {
-      state.loading = false;
       state.error = action.payload;
-    });
-
-    builder.addMatcher(isLoading, (state) => {
-      state.loading = true;
     });
   },
 });
 
+export const { addUserError } = userSlice.actions;
 export default userSlice.reducer;

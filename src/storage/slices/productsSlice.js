@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { isLoading, isError } from '../utilsStore';
+import { isLoading, isError, sortReviews } from '../utilsStore';
 import { ratingProduct } from '../../utils/ratingProduct';
 
 const initialState = {
@@ -13,7 +13,10 @@ const initialState = {
 
 export const fetchAllProducts = createAsyncThunk(
   'products/fetchAllProducts',
-  async function (id, { fulfillWithValue, rejectWithValue, getState, extra }) {
+  async function (
+    data,
+    { fulfillWithValue, rejectWithValue, getState, extra }
+  ) {
     try {
       const state = getState();
       const data = await extra.getAllProducts();
@@ -39,12 +42,58 @@ export const fetchChangeLike = createAsyncThunk(
   }
 );
 
+// Получение продуктов по запросу
 export const fetchProductsByQuery = createAsyncThunk(
   'products/fetchProductsByQuery',
   async function (searchQuery, { fulfillWithValue, rejectWithValue, extra }) {
     try {
       const resultSearch = await extra.getProductsByQuery(searchQuery);
       return fulfillWithValue(resultSearch);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+// Получение продукта по id
+export const fetchCurrentProduct = createAsyncThunk(
+  'products/fetchCurrentProduct',
+  async function (productId, { fulfillWithValue, rejectWithValue, extra }) {
+    try {
+      const product = await extra.getProductById(productId);
+      return fulfillWithValue(product);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+// Добавление отзыва
+export const fetchSendReview = createAsyncThunk(
+  'products/fetchSendReview',
+  async function (
+    { productId, data },
+    { fulfillWithValue, rejectWithValue, extra }
+  ) {
+    try {
+      const res = await extra.addReviewByIdProduct(productId, data);
+      return fulfillWithValue(res);
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+// Удаление отзыва
+export const fetchDeleteReview = createAsyncThunk(
+  'products/fetchDeleteReview',
+  async function (
+    { productId, reviewId },
+    { fulfillWithValue, rejectWithValue, extra }
+  ) {
+    try {
+      const res = await extra.deleteReviewById(productId, reviewId);
+      return fulfillWithValue(res);
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -102,6 +151,7 @@ const productsSlice = createSlice({
       state.favoritesProducts = state.products.filter((product) => {
         return product.likes.some((id) => id === action.payload.userId);
       });
+      state.loading = false;
     });
 
     // Изменение лайка, состояния избранных продуктов
@@ -123,17 +173,40 @@ const productsSlice = createSlice({
         state.favoritesProducts = state.favoritesProducts.filter(
           (e) => e._id !== updatedProduct._id
         );
+        state.loading = false;
       }
       // Добавление лайка
       if (isLike === false) {
         state.favoritesProducts = [...state.favoritesProducts, updatedProduct];
+        state.loading = false;
       }
     });
 
     // Получение продуктов по запросу
     builder.addCase(fetchProductsByQuery.fulfilled, (state, action) => {
-      //console.log(action.payload);
       state.products = action.payload;
+      state.loading = false;
+    });
+
+    // Получение продукта по id
+    builder.addCase(fetchCurrentProduct.fulfilled, (state, action) => {
+      state.currentProduct = action.payload;
+      sortReviews(state.currentProduct.reviews);
+      state.loading = false;
+    });
+
+    // Добавление отзыва
+    builder.addCase(fetchSendReview.fulfilled, (state, action) => {
+      state.currentProduct = action.payload;
+      sortReviews(state.currentProduct.reviews);
+      state.loading = false;
+    });
+
+    // Удаление отзыва
+    builder.addCase(fetchDeleteReview.fulfilled, (state, action) => {
+      state.currentProduct = action.payload;
+      sortReviews(state.currentProduct.reviews);
+      state.loading = false;
     });
 
     builder.addMatcher(isError, (state, action) => {
@@ -147,6 +220,5 @@ const productsSlice = createSlice({
   },
 });
 
-export const { doSorting } = productsSlice.actions;
-export const { setSearch } = productsSlice.actions;
+export const { doSorting, setSearch } = productsSlice.actions;
 export default productsSlice.reducer;

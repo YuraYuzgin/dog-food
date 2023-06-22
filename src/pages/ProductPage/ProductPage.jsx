@@ -1,46 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Product } from '../../components/Product/Product';
-import { api } from '../../utils/api';
+import { fetchCurrentProduct } from '../../storage/slices/productsSlice';
 
 export const ProductPage = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState({});
 
+  const dispatch = useDispatch();
   useEffect(() => {
-    api
-      .getProductById(id)
-      .then((productData) => setProduct(productData))
-      .catch(() => console.log('error'));
-  }, [id]);
+    dispatch(fetchCurrentProduct(id));
+  }, [dispatch, id]);
 
-  const sendReview = useCallback(
-    async (data) => {
-      api
-        .addReviewByIdProduct(product._id, data)
-        .then((data) => setProduct({ ...data }))
-        .catch(() => console.log('error'));
-    },
-    [product._id]
-  );
+  const currentProduct = useSelector((state) => state.products.currentProduct);
 
-  const deleteReview = useCallback(
-    async (reviewId) => {
-      api
-        .deleteReviewById(product._id, reviewId)
-        .then((data) => setProduct({ ...data }))
-        .catch(() => console.log('error'));
-    },
-    [product._id]
-  );
-
-  return (
-    !!Object.keys(product).length && (
-      <Product
-        product={product}
-        sendReview={sendReview}
-        deleteReview={deleteReview}
-      />
-    )
-  );
+  return !!Object.keys(currentProduct).length && <Product />;
 };

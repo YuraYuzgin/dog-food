@@ -2,8 +2,7 @@ const config = {
   baseUrl: 'https://api.react-learning.ru',
   headers: {
     'Content-Type': 'application/json',
-    authorization:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDNlZDFjNzMyOTFkNzkwYjNmMzRkMWEiLCJncm91cCI6Imdyb3VwLTEyIiwiaWF0IjoxNjgxODM4ODk2LCJleHAiOjE3MTMzNzQ4OTZ9.6TJwVndTd3pnfSuNuqVFRwe3CM_jx_TshJp8yC5L5mE',
+    authorization: localStorage.getItem('token'),
   },
 };
 
@@ -100,6 +99,24 @@ class Api {
   // Смена пароля (с новым токеном)
   changePassword(data, token) {
     return fetch(`${this.baseUrl}/password-reset/${token}`, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify(data),
+    }).then(onResponse);
+  }
+
+  // Изменение аватара
+  changeAvatar(data) {
+    return fetch(`${this.baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify(data),
+    }).then(onResponse);
+  }
+
+  // Изменение информации о пользователе
+  changeUserInfo(data) {
+    return fetch(`${this.baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this.headers,
       body: JSON.stringify(data),

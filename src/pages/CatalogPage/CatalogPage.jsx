@@ -7,16 +7,19 @@ import iconSortDown from './img/sort-down-solid.svg';
 import { changeWordByQuantity } from '../../utils/changeWordByQuantity';
 import { useDispatch, useSelector } from 'react-redux';
 import { doSorting } from '../../storage/slices/productsSlice';
+import { Preloader } from '../../components/Preloader/Preloader';
+import { Notification } from '../../components/Notification/Notification';
 
 export const CatalogPage = ({ page, setPage, pageSize, setPageSize }) => {
   const allProducts = useSelector((state) => state.products.products);
-  console.log(allProducts);
   const search = useSelector((state) => state.products.searchQuery);
   const [currentSort, setCurrentSort] = useState(0);
   const [isActive, setIsActive] = useState(-1);
   const [showProducts, setShowProducts] = useState(allProducts.slice(1, 16));
 
   const dispatch = useDispatch();
+  const productsIsLoading = useSelector((state) => state.products.loading);
+  const basketError = useSelector((state) => state.basket.error);
 
   // Изменение сортировки на маленьких экранах
   const sortChange = (upOrDown) => {
@@ -67,106 +70,110 @@ export const CatalogPage = ({ page, setPage, pageSize, setPageSize }) => {
   }, [allProducts, page, pageSize]);
 
   return (
-    <div className="catalog__page">
-      {/* Информация о количесиве найденных товаров */}
-      {!!search && (
-        <p className="info_by_search">
-          По запросу <b>{search}</b>{' '}
-          {allProducts.length === 1 ? 'найден ' : 'найдено '}
-          {allProducts.length}
-          {changeWordByQuantity(allProducts.length, 'товар')}
-        </p>
-      )}
-
-      {/* Уведомледние об отсутсвии продуктов по запросу */}
-      {allProducts.length === 0 && search && (
-        <NoProductsByQuery />
-      )}
-
-      {/* Сортировка на экранах от 680px */}
-      {allProducts.length > 0 && (
-        <div className="sort__cards__wrapper sort__cards__large">
-          {sortArray.map((e, index) => (
-            <span
-              className={`sort_item ${
-                isActive === index && 'sort_item__active'
-              }`}
-              key={e.id}
-              onClick={() => {
-                setIsActive(index);
-                dispatch(doSorting(e.id));
-              }}
-            >
-              {e.title}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* Сортировка на экранах до 680px */}
-      {allProducts.length > 0 && (
-        <div className="sort__cards__wrapper sort__cards__small">
-          <img
-            className="sort_up"
-            onClick={() => sortChange('up')}
-            src={iconSortUp}
-            alt="arrow up"
-          />
-          <img
-            className="sort_down"
-            onClick={() => sortChange('down')}
-            src={iconSortDown}
-            alt="arrow down"
-          />
-          <p
-            className="current_sort"
-            onClick={() => dispatch(doSorting(sortArray[currentSort].id))}
-          >
-            {sortArray[currentSort].title}
-          </p>
-        </div>
-      )}
-
-      <AllCardsList allProducts={showProducts} />
-
-      <div className="pagination__wrapper">
-        <div className="page__size">
-          <span>Количество продуктов на странице: </span>
-          <select value={pageSize} onChange={handleChangePageSize}>
-            <option value="16">16</option>
-            <option value="32">32</option>
-          </select>
-        </div>
-        <div className="page__number">
-          {page > 1 && (
-            <span
-              className="change__page__on__one"
-              onClick={() => setPage(1 * page - 1)}
-            >
-              &lt;
-            </span>
+    <>
+      {basketError && <Notification>basketError</Notification>}
+      {productsIsLoading && <Preloader />}
+      {!productsIsLoading && (
+        <div className="catalog__page">
+          {/* Информация о количесиве найденных товаров */}
+          {!!search && (
+            <p className="info_by_search">
+              По запросу <b>{search}</b>{' '}
+              {allProducts.length === 1 ? 'найден ' : 'найдено '}
+              {allProducts.length}
+              {changeWordByQuantity(allProducts.length, 'товар')}
+            </p>
           )}
-          {arrayPages.map((e, index) => (
-            <span
-              className={`page__number__current ${
-                page - 1 === index && 'page__number__current__active'
-              }`}
-              key={index}
-              onClick={(event) => goToCurrentPage(event)}
-            >
-              {e}
-            </span>
-          ))}
-          {page < arrayPages.length && (
-            <span
-              className="change__page__on__one"
-              onClick={() => setPage(1 * page + 1)}
-            >
-              &gt;
-            </span>
+
+          {/* Уведомледние об отсутсвии продуктов по запросу */}
+          {allProducts.length === 0 && search && <NoProductsByQuery />}
+
+          {/* Сортировка на экранах от 680px */}
+          {allProducts.length > 0 && (
+            <div className="sort__cards__wrapper sort__cards__large">
+              {sortArray.map((e, index) => (
+                <span
+                  className={`sort_item ${
+                    isActive === index && 'sort_item__active'
+                  }`}
+                  key={e.id}
+                  onClick={() => {
+                    setIsActive(index);
+                    dispatch(doSorting(e.id));
+                  }}
+                >
+                  {e.title}
+                </span>
+              ))}
+            </div>
           )}
+
+          {/* Сортировка на экранах до 680px */}
+          {allProducts.length > 0 && (
+            <div className="sort__cards__wrapper sort__cards__small">
+              <img
+                className="sort_up"
+                onClick={() => sortChange('up')}
+                src={iconSortUp}
+                alt="arrow up"
+              />
+              <img
+                className="sort_down"
+                onClick={() => sortChange('down')}
+                src={iconSortDown}
+                alt="arrow down"
+              />
+              <p
+                className="current_sort"
+                onClick={() => dispatch(doSorting(sortArray[currentSort].id))}
+              >
+                {sortArray[currentSort].title}
+              </p>
+            </div>
+          )}
+
+          <AllCardsList allProducts={showProducts} />
+
+          <div className="pagination__wrapper">
+            <div className="page__size">
+              <span>Количество продуктов на странице: </span>
+              <select value={pageSize} onChange={handleChangePageSize}>
+                <option value="16">16</option>
+                <option value="32">32</option>
+              </select>
+            </div>
+            <div className="page__number">
+              {page > 1 && (
+                <span
+                  className="change__page__on__one"
+                  onClick={() => setPage(1 * page - 1)}
+                >
+                  &lt;
+                </span>
+              )}
+              {arrayPages.map((e, index) => (
+                <span
+                  className={`page__number__current ${
+                    page - 1 === index && 'page__number__current__active'
+                  }`}
+                  key={index}
+                  onClick={(event) => goToCurrentPage(event)}
+                >
+                  {e}
+                </span>
+              ))}
+              {page < arrayPages.length && (
+                <span
+                  className="change__page__on__one"
+                  onClick={() => setPage(1 * page + 1)}
+                >
+                  &gt;
+                </span>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };

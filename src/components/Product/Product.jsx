@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import './index.sass';
 import { reviewsCount } from '../../utils/reviewsCount';
 import { changeWordByQuantity } from '../../utils/changeWordByQuantity';
-import minus from './img/minus.svg';
-import plus from './img/plus.svg';
 import truck from './img/ic-truck.svg';
 import quality from './img/ic-quality.svg';
 import { ReactComponent as Like } from '../ProductCard/img/like.svg';
@@ -13,11 +11,18 @@ import { ratingProduct } from '../../utils/ratingProduct';
 import { RatingStars } from '../RatingStars/RatingStars';
 import { Reviews } from '../Reviews/Reviews';
 import { fetchChangeLike } from '../../storage/slices/productsSlice';
+import { ChangeCountGoods } from '../ChangeCountGoods/ChangeCountGoods';
 
-export const Product = ({ product, sendReview, deleteReview }) => {
-  const [isLike, setIsLike] = useState(false);
+export const Product = () => {
+  const [isCount, setIsCount] = useState(true);
+  const [isMaxCount, setIsMaxCount] = useState(false);
+  const product = useSelector((state) => state.products.currentProduct);
+  const goodsInBasket = useSelector((state) => state.basket.goods);
   const user = useSelector((state) => state.user.data);
+  const [isLike, setIsLike] = useState(false);
   const dispatch = useDispatch();
+
+  const good = goodsInBasket.find((good) => good.productId === product._id);
 
   const productReviews = product.reviews;
 
@@ -30,9 +35,8 @@ export const Product = ({ product, sendReview, deleteReview }) => {
   const countStars = Math.round(ratingProduct(productReviews));
 
   // При нажатии на кнопку изменения лайка отправляем запрос на сервер. Меняем значение isLike.
-  // Если ошибкок не произошло, меняем значение isLike.
   const clickChangeLike = () => {
-    if (dispatch(fetchChangeLike({product, isLike}))) setIsLike(!isLike);
+    if (dispatch(fetchChangeLike({ product, isLike }))) setIsLike(!isLike);
   };
 
   const reviewsCountThisProduct = reviewsCount(product.reviews);
@@ -79,16 +83,20 @@ export const Product = ({ product, sendReview, deleteReview }) => {
               <p className="product__main__price">{product.price}&nbsp;₽</p>
             </div>
           )}
+          
           <div className="product__main__cart">
-            <div className="product__main__cart__add_put_away">
-              <img src={minus} alt="minus" />
-              <span className="product__main__cart__add__count">0</span>
-              <img src={plus} alt="plus" />
-            </div>
-            <button className="product__main__cart__btn_add_to_cart">
-              В корзину
-            </button>
+            <ChangeCountGoods
+              isCount={isCount}
+              setIsCount={setIsCount}
+              isMaxCount={isMaxCount}
+              setIsMaxCount={setIsMaxCount}
+              goodsInBasket={goodsInBasket}
+              good={good}
+              product={product}
+              classForProduct={true}
+            />
           </div>
+
           <div className="product__main__add_to_favorite">
             <button
               onClick={clickChangeLike}
@@ -157,11 +165,7 @@ export const Product = ({ product, sendReview, deleteReview }) => {
           </span>
         </div>
       </div>
-      <Reviews
-        reviews={productReviews}
-        sendReview={sendReview}
-        deleteReview={deleteReview}
-      />
+      <Reviews />
     </div>
   );
 };

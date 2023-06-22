@@ -7,13 +7,16 @@ import '../index.sass';
 import {
   emailRegister,
   passwordRegister,
-} from '../../../validator/authValidator';
+} from '../../../validator/formValidator';
 import eye from '../../../assets/img/eye.svg';
 import eyeSlash from '../../../assets/img/eye-slash.svg';
+import { useDispatch } from 'react-redux';
+import { addUserError } from '../../../storage/slices/userSlice';
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
@@ -26,7 +29,7 @@ export const LoginForm = () => {
       localStorage.setItem('token', result.token);
       window.location.replace(window.location.origin);
     } catch (error) {
-      alert('Ошибка.');
+      dispatch(addUserError(error));
     }
   };
 

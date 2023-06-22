@@ -8,9 +8,14 @@ import iconCart from './img/cart.svg';
 import iconProfile from './img/profile.svg';
 import { useSelector } from 'react-redux';
 
-export const Header = memo(({ setIsActiveModal }) => {
+export const Header = memo(({ setIsActiveModal, isAuthorized }) => {
   const favorites = useSelector((state) => state.products.favoritesProducts);
+  const goods = useSelector((state) => state.basket.goods);
   const location = useLocation();
+
+  const goodsCount = goods.reduce((sum, currentGood) => {
+    return sum + currentGood.count;
+  }, 0);
 
   return (
     <header className="header">
@@ -21,18 +26,29 @@ export const Header = memo(({ setIsActiveModal }) => {
           <Link to={'/favorites'}>
             <div className="header__container__favorites">
               {!!favorites.length && (
-                <span className="favorites__bubble">{favorites.length}</span>
+                <span className="favorites__bubble bubble">{favorites.length}</span>
               )}
               <img src={iconFavorites} alt="favorites" />
             </div>
           </Link>
-          <div>
-            <img src={iconCart} alt="cart" />
+          <div className="header__container__basket">
+            <Link to={'/basket'}>
+                {!!goodsCount && (
+                  <span className="basket__bubble bubble">{goodsCount}</span>
+                )}
+              <img src={iconCart} alt="cart" />
+            </Link>
           </div>
           <div>
-            <Link to={'/login'} onClick={() => setIsActiveModal(true)}>
-              <img src={iconProfile} alt="profile" />
-            </Link>
+            {isAuthorized ? (
+              <Link to={'/profile'}>
+                <img src={iconProfile} alt="profile" />
+              </Link>
+            ) : (
+              <Link to={'/login'} onClick={() => setIsActiveModal(true)}>
+                <img src={iconProfile} alt="profile" />
+              </Link>
+            )}
           </div>
         </div>
       </div>

@@ -1,20 +1,29 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Preloader } from '../../components/Preloader/Preloader';
 import { getUser } from '../../storage/slices/userSlice';
 import iconEmail from './img/ic-mail.svg';
 import './index.sass';
 
-export const ProfilePage = () => {
+export const ProfilePage = ({ setIsAuthorized }) => {
   const dispatch = useDispatch();
   const { data: user, loading } = useSelector((state) => state.user);
-  console.log(user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getUser());
   }, [dispatch]);
 
+  const logout = () => {
+    localStorage.removeItem('token');
+    setIsAuthorized(false);
+    navigate('/login');
+  };
+
   return (
     <>
+      {loading && <Preloader />}
       {!loading && (
         <div className="profile">
           <h2 className="profile__header">Профиль</h2>
@@ -25,8 +34,15 @@ export const ProfilePage = () => {
             <img src={iconEmail} alt="email" />
             <p className="profile__email">{user.email}</p>
           </div>
-          <button className="profile__btn">Изменить</button>
-          <button className="profile__btn">Выйти</button>
+          <button
+            className="profile__btn"
+            onClick={() => navigate('/change-profile')}
+          >
+            Изменить
+          </button>
+          <button className="profile__btn" onClick={logout}>
+            Выйти
+          </button>
         </div>
       )}
     </>

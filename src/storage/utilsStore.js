@@ -5,3 +5,7 @@ export const isError = (data) => {
 export const isLoading = (data) => {
   return data.type.endsWith('pending');
 };
+
+export const sortReviews = (reviews) => {
+  reviews.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+};

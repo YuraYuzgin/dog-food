@@ -3,7 +3,7 @@ import React from 'react';
 import { ProductCard } from '../ProductCard/ProductCard';
 import './index.sass';
 
-export const AllCardsList = ({ allProducts, isFavorite = false }) => {
+export const AllCardsList = ({ allProducts, isFavorite }) => {
   
   return (
     <div className="cards">

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import './index.sass';
 import { ReactComponent as Like } from './img/like.svg';
 import basket from '../../assets/img/ic-trash.svg';
 import { fetchChangeLike } from '../../storage/slices/productsSlice.js';
+import { ChangeCountGoods } from '../ChangeCountGoods/ChangeCountGoods';
 
 export const ProductCard = ({
   pictures,
@@ -16,12 +17,17 @@ export const ProductCard = ({
   discount,
   isFavorite,
 }) => {
+  const [isCount, setIsCount] = useState(true);
+  const [isMaxCount, setIsMaxCount] = useState(false);
   const user = useSelector((state) => state.user.data);
+  const goodsInBasket = useSelector((state) => state.basket.goods);
   const dispatch = useDispatch();
+
+  const good = goodsInBasket.find((good) => good.productId === product._id);
 
   const isLike = likes.some((e) => e === user._id);
   const clickChangeLike = () => {
-    dispatch(fetchChangeLike({product, isLike}));
+    dispatch(fetchChangeLike({ product, isLike }));
   };
   return (
     <div className="product__card">
@@ -65,7 +71,18 @@ export const ProductCard = ({
         <p className="product__card__wight">{wight}</p>
         <p className="product__card__name">{name}</p>
       </Link>
-      <span className="product__card__btn">В Корзину</span>
+      <div className="product__card__change_count_goods">
+        <ChangeCountGoods
+          isCount={isCount}
+          setIsCount={setIsCount}
+          isMaxCount={isMaxCount}
+          setIsMaxCount={setIsMaxCount}
+          goodsInBasket={goodsInBasket}
+          good={good}
+          product={product}
+          classForProduct={false}
+        />
+      </div>
     </div>
   );
 };

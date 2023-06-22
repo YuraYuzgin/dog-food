@@ -8,8 +8,11 @@ import { LoginForm } from '../components/Auth/LoginForm/LoginForm';
 import { RegistrationForm } from '../components/Auth/RegistrationForm/RegistrationForm';
 import { ResetPasswordForm } from '../components/Auth/ResetPasswordForm/ResetPasswordForm';
 import { ProfilePage } from '../pages/ProfilePage/ProfilePage';
+import { ChangeProfilePage } from '../pages/ChangeProfilePage/ChangeProfilePage';
+import { BasketPage } from '../pages/BasketPage/BasketPage';
 
 export const Router = ({
+  setIsAuthorized,
   isAuthorized,
   isActiveModal,
   setIsActiveModal,
@@ -71,16 +74,16 @@ export const Router = ({
               />
             }
           />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/profile" element={<ProfilePage setIsAuthorized={setIsAuthorized} />} />
+          <Route path="/change-profile" element={<ChangeProfilePage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
+          <Route path="/basket" element={<BasketPage />} />
           {authRoutes}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       ) : (
-        <Routes>
-          <Route path="/login" element={<div>Not authorized user.</div>} />
-        </Routes>
+        <Routes>{authRoutes}</Routes>
       )}
     </>
   );

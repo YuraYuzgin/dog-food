@@ -7,14 +7,18 @@ import {
   emailRegister,
   tokenRegister,
   passwordRegister,
-} from '../../../validator/authValidator';
+} from '../../../validator/formValidator';
 import eye from '../../../assets/img/eye.svg';
 import eyeSlash from '../../../assets/img/eye-slash.svg';
+import { useDispatch } from 'react-redux';
+import { addUserError } from '../../../storage/slices/userSlice';
+import { BtnBack } from '../../Buttons/BtnBack/BtnBack';
 
 export const ResetPasswordForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-
   const [isHaveToken, setIsHaveToken] = useState(false);
+
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -32,14 +36,14 @@ export const ResetPasswordForm = () => {
         localStorage.setItem('token', result.token);
         window.location.replace(window.location.origin);
       } catch (error) {
-        alert('Ошибка.');
+        dispatch(addUserError(error));
       }
     } else {
       try {
         await api.passwordReset(data);
         setIsHaveToken(true);
       } catch (error) {
-        alert('Ошибка.');
+        dispatch(addUserError(error));
       }
     }
   };
@@ -49,6 +53,8 @@ export const ResetPasswordForm = () => {
       <div className="auth_form__header__reset_pass">
         <h2>Восстановление пароля</h2>
       </div>
+
+      <div className="auth_form__back"><BtnBack className="auth_form__back" /></div>
 
       <div className="auth_form__form__info">
         <span className="auth_form__form__info__text__for_reset">

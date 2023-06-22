@@ -24,3 +24,15 @@ export const groupRegister = {
 export const tokenRegister = {
   required: { value: true, message: 'Введите токен.' },
 };
+
+export const avatarRegister = {
+  required: { value: true, message: 'Введите ссылку.' },
+};
+
+export const nameRegister = {
+  required: { value: true, message: 'Введите имя.' },
+};
+
+export const aboutRegister = {
+  required: { value: true, message: 'Введите информацию о себе.' },
+};

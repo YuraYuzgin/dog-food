@@ -1,11 +1,15 @@
 import React, { memo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.sass';
 import { RatingStars } from '../RatingStars/RatingStars';
 import { ReactComponent as Basket } from '../../assets/img/ic-trash.svg';
+import {
+  fetchSendReview,
+  fetchDeleteReview,
+} from '../../storage/slices/productsSlice';
 
-export const Reviews = memo(({ reviews, sendReview, deleteReview }) => {
+export const Reviews = memo(() => {
   const [showForm, setShowForm] = useState(false);
   const [rate, setRate] = useState(3);
   const [wasClick, setWasClick] = useState(false);
@@ -13,9 +17,9 @@ export const Reviews = memo(({ reviews, sendReview, deleteReview }) => {
 
   const user = useSelector((state) => state.user.data);
 
-  const reviewsSort = reviews.sort(
-    (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
-  );
+  const dispatch = useDispatch();
+  const productId = useSelector((state) => state.products.currentProduct._id);
+  const reviews = useSelector((state) => state.products.currentProduct.reviews);
 
   const dateOptions = {
     day: 'numeric',
@@ -42,9 +46,14 @@ export const Reviews = memo(({ reviews, sendReview, deleteReview }) => {
   };
 
   const onSendReview = ({ text }) => {
-    sendReview({ text, rating: rate });
+    const data = { text, rating: rate };
+    dispatch(fetchSendReview({ productId, data }));
     reset();
     setShowForm(false);
+  };
+
+  const deleteReview = (reviewId) => {
+    dispatch(fetchDeleteReview({ productId, reviewId }));
   };
 
   return (
@@ -97,7 +106,7 @@ export const Reviews = memo(({ reviews, sendReview, deleteReview }) => {
         </form>
       )}
       <div className="product__reviews__list">
-        {reviewsSort.map((review) => {
+        {reviews.map((review) => {
           return (
             <div className="product__reviews__list__item" key={review._id}>
               <div className="product__reviews__list__item__hr" />

@@ -1,0 +1,54 @@
+@import '../../variables'
+.change_count_goods
+    &__change_count
+        position: relative
+        bottom: 5px
+        display: flex
+        box-sizing: border-box
+        align-items: center
+        justify-content: space-between
+        width: max-content
+        height: 40px
+        background: #fff
+        border-radius: 55px
+        border: 1px solid #CFD8DC
+        padding-left: 20px
+        padding-right: 20px
+        gap: 14px
+        font-weight: 700
+        font-size: 22px
+        line-height: 22px
+        color: $color-text-main
+        padding-bottom: 2px
+        &__minus
+            font-stretch: extra-expanded
+            cursor: pointer
+        &__plus
+            cursor: pointer
+
+    &__btn
+        position: relative
+        bottom: 5px
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 116px
+        height: 40px
+        background: #ffe44d
+        border-radius: 55px
+        font-weight: 700
+        font-size: 16px
+        line-height: 20px
+        color: $color-text-main
+        padding-bottom: 2px
+        cursor: pointer
+
+.disable
+    cursor: default
+    color: #CFD8DC
+
+.for_product
+    &__change_count
+        position: relative
+    &__btn
+        position: absolute

@@ -1,0 +1,37 @@
+@import '../../variables'
+
+.product_in_basket
+    display: flex
+    align-items: center
+    margin-bottom: 49px
+    &__image
+        width: 62px
+        height: 62px
+        margin-right: 16px
+    &__info
+        display: flex
+        flex-direction: column
+        margin-right: 32px
+        width: 224px
+        &__name
+            color: $color-text-main
+            font-weight: 700
+            font-size: 16px
+            line-height: 20px
+            margin-bottom: 8px
+        &__wight
+            font-size: 14px
+            line-height: 14px
+            color: #7B8E98
+    &__change_count
+        margin-top: 10px
+        margin-right: 52px
+    &__price_block
+        display: flex
+        flex-direction: column
+        justify-content: center
+        margin-right: 32px
+        margin-top: 6px
+        width: 72px
+    &__remove_good
+        cursor: pointer
