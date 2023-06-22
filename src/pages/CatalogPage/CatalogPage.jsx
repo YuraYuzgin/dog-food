@@ -8,7 +8,6 @@ import { changeWordByQuantity } from '../../utils/changeWordByQuantity';
 import { useDispatch, useSelector } from 'react-redux';
 import { doSorting } from '../../storage/slices/productsSlice';
 import { Preloader } from '../../components/Preloader/Preloader';
-import { Notification } from '../../components/Notification/Notification';
 
 export const CatalogPage = ({ page, setPage, pageSize, setPageSize }) => {
   const allProducts = useSelector((state) => state.products.products);
@@ -19,7 +18,6 @@ export const CatalogPage = ({ page, setPage, pageSize, setPageSize }) => {
 
   const dispatch = useDispatch();
   const productsIsLoading = useSelector((state) => state.products.loading);
-  const basketError = useSelector((state) => state.basket.error);
 
   // Изменение сортировки на маленьких экранах
   const sortChange = (upOrDown) => {
@@ -71,7 +69,6 @@ export const CatalogPage = ({ page, setPage, pageSize, setPageSize }) => {
 
   return (
     <>
-      {basketError && <Notification>basketError</Notification>}
       {productsIsLoading && <Preloader />}
       {!productsIsLoading && (
         <div className="catalog__page">

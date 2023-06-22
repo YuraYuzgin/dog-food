@@ -44,7 +44,7 @@ export const BasketPage = () => {
     }
   }, 0);
 
-  const totaCost = totalSum - totalSale;
+  const totalCost = totalSum - totalSale;
 
   return (
     <div className="basket">
@@ -95,7 +95,7 @@ export const BasketPage = () => {
                     Общая стоимость
                   </span>
                   <span className="basket__main__order__cost__value">
-                    {totaCost}&nbsp;₽
+                    {totalCost}&nbsp;₽
                   </span>
                 </div>
                 <button
