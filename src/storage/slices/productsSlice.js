@@ -140,6 +140,7 @@ const productsSlice = createSlice({
 
     // Текст поискового запроса
     setSearch: (state, action) => {
+      console.log(action.payload);
       state.searchQuery = action.payload;
     },
   },

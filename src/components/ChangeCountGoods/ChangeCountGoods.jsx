@@ -20,8 +20,11 @@ export const ChangeCountGoods = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (good?.count === product.stock) {
+    if (good?.count >= product.stock) {
       setIsMaxCount(true);
+    }
+    if (good?.count < product.stock) {
+      setIsMaxCount(false);
     }
   }, [good?.count, product.stock, setIsMaxCount]);
 

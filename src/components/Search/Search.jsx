@@ -2,7 +2,10 @@ import { useState, memo } from 'react';
 import './index.sass';
 import iconClose from './img/ic-close-input.svg';
 import { useDispatch } from 'react-redux';
-import {setSearch} from '../../storage/slices/productsSlice'
+import {
+  fetchProductsByQuery,
+  setSearch,
+} from '../../storage/slices/productsSlice';
 
 export const Search = memo(() => {
   const [value, setValue] = useState('');
@@ -15,7 +18,7 @@ export const Search = memo(() => {
 
   const handleClear = () => {
     setValue('');
-    setSearch('');
+    dispatch(setSearch(''));
   };
 
   return (
