@@ -9,7 +9,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { doSorting } from '../../storage/slices/productsSlice';
 import { Preloader } from '../../components/Preloader/Preloader';
 
-export const CatalogPage = ({ page, setPage, pageSize, setPageSize }) => {
+export const CatalogPage = () => {
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(16);
   const allProducts = useSelector((state) => state.products.products);
   const search = useSelector((state) => state.products.searchQuery);
   const [currentSort, setCurrentSort] = useState(0);

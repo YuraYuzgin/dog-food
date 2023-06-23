@@ -16,10 +16,6 @@ export const Router = ({
   isAuthorized,
   isActiveModal,
   setIsActiveModal,
-  page,
-  setPage,
-  pageSize,
-  setPageSize,
 }) => {
   const authRoutes = (
     <>
@@ -66,12 +62,7 @@ export const Router = ({
           <Route
             path="/"
             element={
-              <CatalogPage
-                page={page}
-                setPage={setPage}
-                pageSize={pageSize}
-                setPageSize={setPageSize}
-              />
+              <CatalogPage />
             }
           />
           <Route path="/profile" element={<ProfilePage setIsAuthorized={setIsAuthorized} />} />

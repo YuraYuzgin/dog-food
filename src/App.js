@@ -17,9 +17,6 @@ import { Notification } from './components/Notification/Notification';
 function App() {
   const [isAuthorized, setIsAuthorized] = useState(true);
   const [isActiveModal, setIsActiveModal] = useState(false);
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(16);
-
   const searchQuery = useSelector((state) => state.products.searchQuery);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -75,10 +72,6 @@ function App() {
           setIsAuthorized={setIsAuthorized}
           isActiveModal={isActiveModal}
           setIsActiveModal={setIsActiveModal}
-          page={page}
-          setPage={setPage}
-          pageSize={pageSize}
-          setPageSize={setPageSize}
         />
       </main>
       <Footer />
