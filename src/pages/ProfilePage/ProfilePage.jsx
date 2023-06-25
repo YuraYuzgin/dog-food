@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Preloader } from '../../components/Preloader/Preloader';
-import { getUser } from '../../storage/slices/userSlice';
+import { getUser, userAuthorized } from '../../storage/slices/userSlice';
 import iconEmail from './img/ic-mail.svg';
 import './index.sass';
 
-export const ProfilePage = ({ setIsAuthorized }) => {
+export const ProfilePage = () => {
   const dispatch = useDispatch();
   const { data: user, loading } = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -17,8 +17,8 @@ export const ProfilePage = ({ setIsAuthorized }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
-    setIsAuthorized(false);
-    navigate('/login');
+    dispatch(userAuthorized(false));
+    navigate('/');
   };
 
   return (

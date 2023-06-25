@@ -1,33 +1,44 @@
 import React, { useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeActiveModal } from '../../storage/slices/modalSlice';
 import './index.sass';
-import closeModal from './img/ic-close-modal.svg';
+import closeModalIcon from './img/ic-close-modal.svg';
 
-export const Modal = ({ isActiveModal, setIsActiveModal, children }) => {
-  useEffect(() => setIsActiveModal(true), [setIsActiveModal]);
+export const Modal = ({ children }) => {
+  const isActiveModal = useSelector((state) => state.modal.isActiveModal);
+  const dispatch = useDispatch();
 
-  const closeByEscape = useCallback(
+  const navigate = useNavigate();
+
+  const closeModalByEscape = useCallback(
     (e) => {
       if (e.key === 'Escape') {
-        document.removeEventListener('keydown', closeByEscape);
-        setIsActiveModal(false);
+        document.removeEventListener('keydown', closeModalByEscape);
+        dispatch(changeActiveModal(false));
+        navigate('/');
       }
     },
-    [setIsActiveModal]
+    [navigate, dispatch]
   );
-  document.addEventListener('keydown', closeByEscape);
+
+  const closeModal = () => {
+    dispatch(changeActiveModal(false));
+    navigate('/');
+  };
 
   useEffect(() => {
-    document.addEventListener('keydown', closeByEscape);
-  }, [closeByEscape]);
+    document.addEventListener('keydown', closeModalByEscape);
+  }, [closeModalByEscape]);
 
   return (
     <div className={`modal ${isActiveModal && 'modal_active'}`}>
       <div className="modal__content">
         <img
           className="modal__content__close_modal"
-          src={closeModal}
+          src={closeModalIcon}
           alt="close-modal"
-          onClick={() => setIsActiveModal(false)}
+          onClick={closeModal}
         />
         {children}
       </div>

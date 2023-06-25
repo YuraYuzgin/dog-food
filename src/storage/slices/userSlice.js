@@ -3,6 +3,8 @@ import { isError } from '../utilsStore';
 
 const initialState = {
   data: {},
+  userAuthorized: true,
+  error: '',
 };
 
 export const getUser = createAsyncThunk(
@@ -45,6 +47,9 @@ const userSlice = createSlice({
   name: 'user',
   initialState: initialState,
   reducers: {
+    userAuthorized: (state, action) => {
+      state.isAuthorized = action.payload;
+    },
     addUserError: (state, action) => {
       state.error = action.payload;
     },
@@ -68,5 +73,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { addUserError } = userSlice.actions;
+export const { userAuthorized, addUserError } = userSlice.actions;
 export default userSlice.reducer;

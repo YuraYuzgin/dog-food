@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import './App.sass';
 import { Header } from './components/Header/Header';
 import { Footer } from './components/Footer/Footer';
 import { useDebounce } from './hooks/useDebounce';
 import { Router } from './router/Router';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser } from './storage/slices/userSlice';
+import { getUser, userAuthorized } from './storage/slices/userSlice';
 import {
   fetchAllProducts,
   fetchProductsByQuery,
@@ -15,25 +14,21 @@ import { parseJwt } from './utils/parseJwt';
 import { Notification } from './components/Notification/Notification';
 
 function App() {
-  const [isAuthorized, setIsAuthorized] = useState(true);
-  const [isActiveModal, setIsActiveModal] = useState(false);
   const searchQuery = useSelector((state) => state.products.searchQuery);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const errorProductsMessage = useSelector((state) => state.products?.error);
   const errorUserMessage = useSelector((state) => state.user?.error);
+  const isAuthorized = useSelector((state) => state.user.isAuthorized);
 
   // Проверка токена
   useEffect(() => {
     const token = parseJwt(localStorage.getItem('token'));
     if (token && new Date() < new Date(token?.exp * 1000)) {
-      setIsAuthorized(true);
+      dispatch(userAuthorized(true));
     } else {
-      setIsAuthorized(false);
-      setIsActiveModal(true);
-      navigate('/login');
+      dispatch(userAuthorized(false));
     }
-  }, []);
+  }, [dispatch]);
 
   // Создание паузы между введением символа в поле запроса и отправкой запроса на сервер
   const debounceValueInApp = useDebounce(searchQuery);
@@ -59,7 +54,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header setIsActiveModal={setIsActiveModal} isAuthorized={isAuthorized} />
+      <Header />
       <main className="container">
         {!!errorProductsMessage && (
           <Notification type="error">{errorProductsMessage}</Notification>
@@ -67,12 +62,7 @@ function App() {
         {!!errorUserMessage && (
           <Notification type="error">{errorUserMessage}</Notification>
         )}
-        <Router
-          isAuthorized={isAuthorized}
-          setIsAuthorized={setIsAuthorized}
-          isActiveModal={isActiveModal}
-          setIsActiveModal={setIsActiveModal}
-        />
+        <Router />
       </main>
       <Footer />
     </div>

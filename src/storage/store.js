@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import userSlice from './slices/userSlice';
 import productsSlice from './slices/productsSlice';
 import basketSlice from './slices/basketSlice';
+import modalSlice from './slices/modalSlice';
 import { api } from '../utils/api';
 
 const store = configureStore({
@@ -9,6 +10,7 @@ const store = configureStore({
     user: userSlice,
     products: productsSlice,
     basket: basketSlice,
+    modal: modalSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

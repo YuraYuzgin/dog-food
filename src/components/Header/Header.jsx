@@ -6,12 +6,15 @@ import { Search } from '../Search/Search';
 import iconFavorites from './img/favorites.svg';
 import iconCart from './img/cart.svg';
 import iconProfile from './img/profile.svg';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeActiveModal } from '../../storage/slices/modalSlice';
 
-export const Header = memo(({ setIsActiveModal, isAuthorized }) => {
+export const Header = memo(() => {
+  const isAuthorized = useSelector((state) => state.user.isAuthorized);
   const favorites = useSelector((state) => state.products.favoritesProducts);
   const goods = useSelector((state) => state.basket.goods);
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const goodsCount = goods.reduce((sum, currentGood) => {
     return sum + currentGood.count;
@@ -26,16 +29,18 @@ export const Header = memo(({ setIsActiveModal, isAuthorized }) => {
           <Link to={'/favorites'}>
             <div className="header__container__favorites">
               {!!favorites.length && (
-                <span className="favorites__bubble bubble">{favorites.length}</span>
+                <span className="favorites__bubble bubble">
+                  {favorites.length}
+                </span>
               )}
               <img src={iconFavorites} alt="favorites" />
             </div>
           </Link>
           <div className="header__container__basket">
             <Link to={'/basket'}>
-                {!!goodsCount && (
-                  <span className="basket__bubble bubble">{goodsCount}</span>
-                )}
+              {!!goodsCount && (
+                <span className="basket__bubble bubble">{goodsCount}</span>
+              )}
               <img src={iconCart} alt="cart" />
             </Link>
           </div>
@@ -45,7 +50,10 @@ export const Header = memo(({ setIsActiveModal, isAuthorized }) => {
                 <img src={iconProfile} alt="profile" />
               </Link>
             ) : (
-              <Link to={'/login'} onClick={() => setIsActiveModal(true)}>
+              <Link
+                to={'/login'}
+                onClick={() => dispatch(changeActiveModal(true))}
+              >
                 <img src={iconProfile} alt="profile" />
               </Link>
             )}

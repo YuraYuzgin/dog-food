@@ -10,22 +10,18 @@ import { ResetPasswordForm } from '../components/Auth/ResetPasswordForm/ResetPas
 import { ProfilePage } from '../pages/ProfilePage/ProfilePage';
 import { ChangeProfilePage } from '../pages/ChangeProfilePage/ChangeProfilePage';
 import { BasketPage } from '../pages/BasketPage/BasketPage';
+import { useSelector } from 'react-redux';
+import { NotAuthorized } from '../components/NotAuthorized/NotAuthorized';
 
-export const Router = ({
-  setIsAuthorized,
-  isAuthorized,
-  isActiveModal,
-  setIsActiveModal,
-}) => {
+export const Router = () => {
+  const isAuthorized = useSelector((state) => state.user.isAuthorized);
+
   const authRoutes = (
     <>
       <Route
         path="/registration"
         element={
-          <Modal
-            isActiveModal={isActiveModal}
-            setIsActiveModal={setIsActiveModal}
-          >
+          <Modal>
             <RegistrationForm />
           </Modal>
         }
@@ -33,10 +29,7 @@ export const Router = ({
       <Route
         path="/login"
         element={
-          <Modal
-            isActiveModal={isActiveModal}
-            setIsActiveModal={setIsActiveModal}
-          >
+          <Modal>
             <LoginForm />
           </Modal>
         }
@@ -44,10 +37,7 @@ export const Router = ({
       <Route
         path="/password-reset"
         element={
-          <Modal
-            isActiveModal={isActiveModal}
-            setIsActiveModal={setIsActiveModal}
-          >
+          <Modal>
             <ResetPasswordForm />
           </Modal>
         }
@@ -59,13 +49,8 @@ export const Router = ({
     <>
       {isAuthorized ? (
         <Routes>
-          <Route
-            path="/"
-            element={
-              <CatalogPage />
-            }
-          />
-          <Route path="/profile" element={<ProfilePage setIsAuthorized={setIsAuthorized} />} />
+          <Route path="/" element={<CatalogPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/change-profile" element={<ChangeProfilePage />} />
           <Route path="/favorites" element={<FavoritesPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
@@ -74,7 +59,10 @@ export const Router = ({
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       ) : (
-        <Routes>{authRoutes}</Routes>
+        <Routes>
+          <Route path="/" element={<NotAuthorized />} />
+          {authRoutes}
+        </Routes>
       )}
     </>
   );
