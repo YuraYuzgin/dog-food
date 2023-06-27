@@ -33,14 +33,14 @@ export const BasketPage = () => {
   }, 0);
 
   const totalSale = productsInBasket.reduce((sum, currentProduct) => {
-    if (!!currentProduct.discount) {
+    if (currentProduct.discount) {
       return (
         sum +
         ((currentProduct.price * currentProduct.discount) / 100) *
           currentProduct.count
       );
     } else {
-      return sum + 0;
+      return sum;
     }
   }, 0);
 

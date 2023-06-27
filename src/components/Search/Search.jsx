@@ -3,7 +3,6 @@ import './index.sass';
 import iconClose from './img/ic-close-input.svg';
 import { useDispatch } from 'react-redux';
 import {
-  fetchProductsByQuery,
   setSearch,
 } from '../../storage/slices/productsSlice';
 

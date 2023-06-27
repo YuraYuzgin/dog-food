@@ -20,6 +20,10 @@ export const Header = memo(() => {
     return sum + currentGood.count;
   }, 0);
 
+  const onActiveModal = () => {
+    dispatch(changeActiveModal(true));
+  };
+
   return (
     <header className="header">
       <div className="header__container">
@@ -50,10 +54,7 @@ export const Header = memo(() => {
                 <img src={iconProfile} alt="profile" />
               </Link>
             ) : (
-              <Link
-                to={'/login'}
-                onClick={() => dispatch(changeActiveModal(true))}
-              >
+              <Link to={'/login'} onClick={onActiveModal}>
                 <img src={iconProfile} alt="profile" />
               </Link>
             )}

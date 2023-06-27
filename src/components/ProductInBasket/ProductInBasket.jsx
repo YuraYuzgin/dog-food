@@ -11,6 +11,16 @@ export const ProductInBasket = ({ product, goods }) => {
   const good = goods.find((good) => good.productId === product._id);
   const dispatch = useDispatch();
 
+  const oldPrice = product.price * good.count;
+  const newPrice = Math.round(
+    (product.price - (product.price * product.discount) / 100) * good.count
+  );
+  const price = product.price * good.count;
+
+  const removeProductFromBasket = () => {
+    dispatch(removeFromBasket(product._id));
+  };
+
   return (
     <div className="product_in_basket">
       <img
@@ -34,24 +44,19 @@ export const ProductInBasket = ({ product, goods }) => {
           classForProduct={false}
         />
       </div>
-      {!!product.discount ? (
+      {product.discount ? (
         <div className="product__card__price__wrapper product_in_basket__price_block">
-          <p className="product__card__old_price">{product.price * good.count}&nbsp;₽</p>
-          <p className="product__card__new_price">
-            {Math.round(
-              (product.price - (product.price * product.discount) / 100) * good.count
-            )}
-            &nbsp;₽
-          </p>
+          <p className="product__card__old_price">{oldPrice}&nbsp;₽</p>
+          <p className="product__card__new_price">{newPrice}&nbsp;₽</p>
         </div>
       ) : (
         <div className="product__card__price__wrapper product_in_basket__price_block">
-          <p className="product__card__price">{product.price * good.count}&nbsp;₽</p>
+          <p className="product__card__price">{price}&nbsp;₽</p>
         </div>
       )}
       <Trash
         className="product_in_basket__remove_good"
-        onClick={() => dispatch(removeFromBasket(product._id))}
+        onClick={removeProductFromBasket}
       />
     </div>
   );

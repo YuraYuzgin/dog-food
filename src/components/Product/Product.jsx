@@ -40,6 +40,9 @@ export const Product = () => {
   };
 
   const reviewsCountThisProduct = reviewsCount(product.reviews);
+  const newPrice = Math.round(
+    product.price - (product.price * product.discount) / 100
+  );
 
   return (
     <div className="product">
@@ -71,19 +74,14 @@ export const Product = () => {
           {!!product.discount ? (
             <div className="product__main__price__wrapper">
               <p className="product__main__old_price">{product.price}&nbsp;₽</p>
-              <p className="product__main__new_price">
-                {Math.round(
-                  product.price - (product.price * product.discount) / 100
-                )}
-                &nbsp;₽
-              </p>
+              <p className="product__main__new_price">{newPrice}&nbsp;₽</p>
             </div>
           ) : (
             <div className="product__main__price__wrapper">
               <p className="product__main__price">{product.price}&nbsp;₽</p>
             </div>
           )}
-          
+
           <div className="product__main__cart">
             <ChangeCountGoods
               isCount={isCount}
@@ -156,12 +154,7 @@ export const Product = () => {
           <span className="product__characteristics__price__title">Цена</span>
           <span className="product__characteristics__price__line"></span>
           <span className="product__characteristics__price__value">
-            {!!product.discount
-              ? Math.round(
-                  product.price - (product.price * product.discount) / 100
-                )
-              : product.price}
-            &nbsp;₽
+            {product.discount ? newPrice : product.price}&nbsp;₽
           </span>
         </div>
       </div>

@@ -29,6 +29,9 @@ export const ProductCard = ({
   const clickChangeLike = () => {
     dispatch(fetchChangeLike({ product, isLike }));
   };
+
+  const newPrice = Math.round(price - (price * discount) / 100);
+
   return (
     <div className="product__card">
       <div className="product__card__tags">
@@ -59,9 +62,7 @@ export const ProductCard = ({
         {!!discount ? (
           <div className="product__card__price__wrapper">
             <p className="product__card__old_price">{price}&nbsp;₽</p>
-            <p className="product__card__new_price">
-              {Math.round(price - (price * discount) / 100)}&nbsp;₽
-            </p>
+            <p className="product__card__new_price">{newPrice}&nbsp;₽</p>
           </div>
         ) : (
           <div className="product__card__price__wrapper">
