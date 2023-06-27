@@ -28,11 +28,11 @@ export const Header = memo(() => {
     <header className="header">
       <div className="header__container">
         <Logo />
-        {location.pathname === '/' && <Search />}
+        {(isAuthorized && location.pathname === '/') && <Search />}
         <div className="header__icons">
           <Link to={'/favorites'}>
             <div className="header__container__favorites">
-              {!!favorites.length && (
+              {(isAuthorized && !!favorites.length) && (
                 <span className="favorites__bubble bubble">
                   {favorites.length}
                 </span>
@@ -42,7 +42,7 @@ export const Header = memo(() => {
           </Link>
           <div className="header__container__basket">
             <Link to={'/basket'}>
-              {!!goodsCount && (
+              {(isAuthorized && !!goodsCount) && (
                 <span className="basket__bubble bubble">{goodsCount}</span>
               )}
               <img src={iconCart} alt="cart" />
