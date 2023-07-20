@@ -6,6 +6,8 @@
 - React Hook Form;
 - Sass;
 
+Примеры страниц можно увидеть ниже:
+
 ![image](https://github.com/YuraYuzgin/dog-food/assets/39434769/7c4e2778-38a3-4476-83ff-672ee86a0b66)
 
 ![image](https://github.com/YuraYuzgin/dog-food/assets/39434769/e744be1e-9099-41b3-a1bd-d436e698e168)
